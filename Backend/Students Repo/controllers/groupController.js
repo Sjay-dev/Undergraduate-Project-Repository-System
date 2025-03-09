@@ -6,40 +6,23 @@ const Group = require("../Models/groupModel");
 // @access private
 const getGroups = asyncHandler(async (req, res) => {
     const groups = await Group.find({ user_id: req.user.id }).populate({
+        
       path: "students",
       select: "name email level matric_number department" // Select only required fields
     });
   
     res.status(200).json(groups);
   });
-
-// @desc Get groups by student id
-// @route GET /api/students/groups
-// @access Private
-const getStudentGroups = asyncHandler(async (req, res) => {
-
-
-    // Find groups where the student's id exists in the students array
-    const groups = await Group.find({ students: req.params.studentId }).populate({
-        path: "students",
-        select: "name email level matric_number department" // Select only the required fields
-    });
-
-    res.status(200).json(groups);
-});
-
-
   
-
 // @desc Create a new group
 // @route POST /api/groups
 // @access private
 const createGroup = asyncHandler(async (req, res) => {
     console.log("Console output", req.body);
 
-    const { groupName, department, projectTopic, students} = req.body;
+    const { groupName, department, projectTopic, students , lecturer} = req.body;
 
-    if (!groupName || !department || !projectTopic || !students ) {
+    if (!groupName || !department || !projectTopic || !students , !lecturer) {
         res.status(400);
         throw new Error("All fields must be filled");
     }
@@ -49,6 +32,7 @@ const createGroup = asyncHandler(async (req, res) => {
         department,
         projectTopic,
         students,
+        lecturer,
         user_id: req.user.id
     });
 
@@ -111,4 +95,4 @@ const deleteGroup = asyncHandler(async (req, res) => {
     res.status(200).json({ message: "Group deleted successfully" });
 });
 
-module.exports = { getGroups, createGroup, getGroup, updateGroup, deleteGroup , getStudentGroups  };
+module.exports = { getGroups, createGroup, getGroup, updateGroup, deleteGroup   };

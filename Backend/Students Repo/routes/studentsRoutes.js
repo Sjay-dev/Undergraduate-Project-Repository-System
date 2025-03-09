@@ -1,8 +1,9 @@
 const express = require("express");
 const validateToken = require("../miiddleware/validateTokenHandler")
+
 const router = express.Router();
 
-const { registerStudent, loginStudent, currentStudent, getStudents, createStudent, getStudent, updateStudent, deleteStudent
+const { registerStudent, loginStudent, currentStudent, getStudents, createStudent, getStudent, getStudentGroups , updateStudent, deleteStudent
 } = require("../controllers/studentController");
 
 
@@ -22,5 +23,8 @@ router.route("/:id")
   .get(validateToken, getStudent)
   .put(validateToken, updateStudent)
   .delete(validateToken, deleteStudent);
+
+  // Get groups where the student is a member 
+router.get("/:id/groups", validateToken , getStudentGroups);
 
 module.exports = router;

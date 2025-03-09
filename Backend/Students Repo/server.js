@@ -25,6 +25,8 @@ app.use("/api/students", require("./routes/studentsRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/groups" , require("./routes/groupsRoutes"))
 
+
+
 // Error Handling Middleware
 app.use(errorHandler);
 

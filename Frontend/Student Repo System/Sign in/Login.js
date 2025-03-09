@@ -88,7 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
         if (response.ok) {
           localStorage.setItem("token", data.accessToken);
-          
+          localStorage.setItem("studentID", data.id);
+
           // Store additional info if needed
           localStorage.setItem("name", data.name);
           localStorage.setItem("email" , data.email)

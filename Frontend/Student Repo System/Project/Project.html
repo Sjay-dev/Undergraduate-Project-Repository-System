@@ -59,7 +59,7 @@
 
             <!-- Project Section starts -->
 
-            <form action="#" class="projectSection">
+            <form action="POST & PUT" class="projectSection">
 
                 <div class="logo">
  <span class="material-symbols-outlined">two_pager</span>
@@ -68,67 +68,21 @@
                 </div>
                  
            <label for="Project Topic">Project Topic
-            <input type="text">
+            <input id="projectTopic" type="text">
            </label>
            
-           <label for="Project Description">Project Description
-            <textarea name="Project Description"></textarea>
-           </label>
+         
 
            <label for="Project Status">
             Project Status:
-            <label for="psColor"> Pending </label>
+            <label id="projectStatus" for="psColor"> Pending </label>
            </label>
-
-           <label for="Project Objective">Project Objective
-            <textarea name="Project Objective"></textarea>
-           </label>  
-
-        
 
             </form>
 
             <!-- Project Section ends -->
 
-            <!-- Project Members Section starts -->
-             <form action="#">
-                <div class="logo">
-                    <span class="material-symbols-outlined">people</span>
-                <h2>Project Members Section</h2>
-                </div>
-                
-                <label for="Project members">
-                    <h2>Project members:</h2>
-                    <br>
-                    <h3>Lemuel Umoh</h3>
-                    <br>
-                    <h3>Mbah Kelechi</h3>
-   
-                </label>
-   
-              <label for="Project Role">
-                Your Project Role:
-               <select name="" id="">
-                   <option value="">Project Manager</option>
-                   <option value="">Frontend Developer</option>
-                   <option value="">Backend Developer</option>
-                   <option value="">Full-Stack Developer</option>
-                   <option value="">UI/UX Designer</option>
-                   <option value="">Database Administrator</option>
-                   <option value="">Security Specialist</option>
-                   <option value="">Data Scientist</option>
-                   <option value="">Documenter</option>
-                   <option value="">Quality Assurance Tester</option>
-                   <option value="">AI/ML Specialist</option>
-                   <option value="">Researcher</option>
-               </select>
-              </label>
-
-             
-             </form>
-             
-
-           <!-- Project Memebers Section ends -->
+           
 
            <!-- Documentation Section Starts -->
 
@@ -230,26 +184,25 @@
             </div>
 
 
-            <label for="Start Date">
-             Start Date
-            <input type="date">
-            </label>
-
             <Label for="Chapter Number">
                 Chapter Number
              <input type="text">
             </Label>
 
-           <label for="End Date">
-            End Date
-            <input type="date">
-           </label>
+            <label for="Project Description">Project Description
+                <textarea id="projectDescription" name="Project Description"></textarea>
+               </label>
 
-           
-           <Label for="Documentation">
-            Document Upload
-         <input type="file">
-           </Label>
+                 
+               <Label for="Documentation">
+                Document Upload
+             <input type="file">
+               </Label>
+
+            <label for="Project Objective">Project Objective
+            <textarea id="projectObjective" name="Project Objective"></textarea>
+           </label>  
+   
            
            
            </form>

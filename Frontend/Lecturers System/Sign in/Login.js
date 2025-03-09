@@ -74,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
               localStorage.setItem("token", data.accessToken);
               localStorage.setItem("firstName", data.firstName);
               localStorage.setItem("lastName", data.lastName);
+              const fullName = `${data.firstName} ${data.lastName}`;
+                localStorage.setItem("fullName", fullName);
               
               showMessage("Login successful! Redirecting...", "success");
               setTimeout(() => {

@@ -1,85 +1,109 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  const token = localStorage.getItem("token");
+  const studentID = localStorage.getItem("studentID");
+  const name = localStorage.getItem("name");
 
-const token = localStorage.getItem("token");
-const name = localStorage.getItem("name");
-const email = localStorage.getItem("email");
-const matric_number = localStorage.getItem("matric_number");
-const level = localStorage.getItem("level");
-const department = localStorage.getItem("department");
+  const userName = document.getElementById("userName");
+  const profileName = document.getElementById("profileName");
+  const groupMembersContainer = document.getElementById("groupMembers");
+  const projectTopicContainer = document.getElementById("projectTopic");
+  const projectSupervisorContainer = document.getElementById("projectSupervisor");
 
-const userName = document.getElementById("userName");
-const profileName = document.getElementById("profileName");
+  if (!token) {
+    window.location.href = "/Frontend/Student Repo System/Sign in/Login.html";
+    return;
+  }
 
-if (!token) {
-  window.location.href = "/Frontend/Student Repo System/Sign in/Login.html";
-  return;
-}
+  try {
+    const response = await fetch("http://localhost:5000/api/students/current", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    // Fetch current student info
-    try {
-      const response = await fetch("http://localhost:5000/api/students/current", 
-        {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-  
-      if (response.ok) {
-        userName.textContent = name || "Supervisor";
-      }
+    if (response.ok) {
+      userName.textContent = name || "Student";
+    } else {
+      userName.textContent = "Student";
+    }
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+  }
+
+  // Fetch Student's group data
+  try {
+    const groupsResponse = await fetch(`http://localhost:5000/api/students/${studentID}/groups`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (groupsResponse.ok) {
+      const studentGroups = await groupsResponse.json();
       
-      else {
-        userName.textContent = "Supervisor";
-      }
-    }
-    
-    catch (error) {
-      console.error("Error fetching user details:", error);
-      userName.textContent = "Supervisor";
-    }
+      if (studentGroups.length > 0) {
+        const group = studentGroups[0]; // Assuming the student is in one group
 
-     // Fetch groups data from backend
-     try {
-      const groupsResponse = await fetch("http://localhost:5000/api/groups", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-  
-      if (groupsResponse.ok) {
-        const groups = await groupsResponse.json();
-        // Update total group count on dashboard
-        document.getElementById("groupCount").innerText = groups.length;
-  
-        // Update the dynamic group list in the sidebar card (replace hard-coded list)
-        const groupListUL = document.getElementById("groupList");
-        if (groupListUL) {
-          groupListUL.innerHTML = ""; // Clear any existing list items
-          groups.forEach((group) => {
-            const li = document.createElement("li");
-            li.className = "list-group-item";
-            li.textContent = group.groupName;
-            li.style.cursor = "pointer";
-            // When clicked, pass the full group object to showGroupDetails
-            li.addEventListener("click", () => showGroupDetails(group));
-            groupListUL.appendChild(li);
-          });
-        }
+        // Update project topic
+        projectTopicContainer.textContent = group.projectTopic || "No project assigned yet";
+
+        projectSupervisorContainer.textContent = group.lecturer || "No supervisor assigned yet";
+
+
+        // Update group members
+        groupMembersContainer.innerHTML = ""; // Clear existing content
+        group.students.forEach(student => {
+          if (student._id !== studentID) { // Exclude current student
+            const memberElement = document.createElement("p");
+            memberElement.textContent = `${student.name}`;
+            groupMembersContainer.appendChild(memberElement);
+          }
+        });
       } else {
-        console.error("Error fetching groups data");
+        projectTopicContainer.textContent = "No project assigned yet";
+        groupMembersContainer.innerHTML = "<p>No group members</p>";
       }
-    } catch (error) {
-      console.error("Error fetching groups data:", error);
+
+
+
+
+      
     }
-  });
+  } catch (error) {
+    console.error("Error fetching group details:", error);
+  }
 
+  // Fetch Recent Uploads
+  try {
+    const uploadsResponse = await fetch("http://localhost:5000/api/projects/recent", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
+    if (uploadsResponse.ok) {
+      const uploads = await uploadsResponse.json();
+      const uploadsTableBody = document.getElementById("uploadsTableBody");
+      uploadsTableBody.innerHTML = ""; // Clear table before inserting new data
 
-
-
-
-
+      uploads.forEach((project) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${project.projectName}</td>
+          <td>${new Date(project.createdAt).toLocaleDateString()}</td>
+          <td>${project.status}</td>
+          <td>${project.technologies.join(", ")}</td>
+        `;
+        uploadsTableBody.appendChild(row);
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching recent uploads:", error);
+  }
+});

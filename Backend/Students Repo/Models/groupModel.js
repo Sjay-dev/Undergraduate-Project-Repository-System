@@ -23,13 +23,24 @@ const groupSchema = new mongoose.Schema(
       required: [true, "Please add project topic"]
     },
 
+  
+
     students: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Student",
         required: [true, "Please add at least one student"]
       }
-    ] },
+    ] ,
+
+    lecturer: {
+      type: String,
+      required: [true, "Please add name of lecturer"]
+    },
+  
+  
+  
+  },
     
   {
     timestamps: true

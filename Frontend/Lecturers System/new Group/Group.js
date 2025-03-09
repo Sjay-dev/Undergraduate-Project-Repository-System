@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
  
   const accessToken = localStorage.getItem("token");
+  const fullName = localStorage.getItem("fullName");
 
   if (!accessToken) {
     // Redirect to login if not authenticated
@@ -98,7 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
       groupName: groupName.value,
       department: department.value,
       projectTopic: projectTopic.value,
-      students: selectedStudents
+      students: selectedStudents,
+      lecturer: fullName
     };
 
     const groupId = groupIdField.value;
@@ -124,6 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
           updateSelectedStudentsUI();
           fetchGroups();
         })
+        
         .catch(error => {
           console.error("Error creating group:", error);
           showAlert("Error creating group", "danger");

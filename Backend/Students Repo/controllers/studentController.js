@@ -2,6 +2,40 @@
     const bcrypt = require("bcryptjs");
     const jwt = require("jsonwebtoken");
     const Student = require("../Models/studentModel")
+    const Group = require("../Models/groupModel");
+
+
+
+// @desc   Get groups for a specific student
+// @route  GET /api/students/:id/groups
+// @access Private
+const getStudentGroups = asyncHandler(async (req, res) => {
+
+    const studentId = req.params.id; // Get student ID from the request params
+
+// Check if student exists in the database
+const studentExists = await Student.findById(studentId);
+if (!studentExists) {
+    res.status(404);
+    throw new Error("Student not found");
+}
+
+    const groups = await Group.find({ students: studentId }).populate({
+      path: "students",
+      select: "name email level matric_number department", // Select only required fields
+    });
+  
+    if (!groups || groups.length === 0) {
+      res.status(404);
+      throw new Error("No groups found for this student");
+    }
+  
+    res.status(200).json(groups);
+  });
+
+
+
+
 
     // @desc Register a Student
     // @route POST /api/student/register
@@ -91,12 +125,13 @@
       
           if(student){
               res.status(200).json({
-            name: student.name,
-            email: student.email,
-            matric_number: student.matric_number ,
-            level: student.level ,
-            department : student.department ,
-            accessToken 
+                id: student.id,
+                name: student.name,
+                email: student.email,
+                 matric_number: student.matric_number ,
+                 level: student.level ,
+                 department : student.department ,
+                 accessToken 
           });
         
         } 
@@ -130,7 +165,7 @@
             department : student.department ,
             level : student.level
 
-            
+    
         });
 
         } else {
@@ -257,4 +292,4 @@
         res.status(200).json({ message: "Student deleted successfully" })
     })
 
-    module.exports = {registerStudent , loginStudent , currentStudent , getStudents , createStudent , getStudent , updateStudent , deleteStudent}
+    module.exports = {registerStudent , loginStudent , currentStudent , getStudents , getStudentGroups , createStudent , getStudent , updateStudent , deleteStudent}
