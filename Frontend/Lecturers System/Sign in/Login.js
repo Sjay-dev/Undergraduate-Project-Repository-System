@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
           });
 
           const data = await response.json();
+          console.log(data)
           if (response.ok) {
               localStorage.setItem("token", data.accessToken);
               localStorage.setItem("firstName", data.firstName);

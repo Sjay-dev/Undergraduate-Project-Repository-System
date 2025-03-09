@@ -79,6 +79,9 @@
               student: {
                 name: student.name,
                 email: student.email,
+                matric_number: student.matric_number ,
+                level: student.level ,
+                department : student.department ,
                 id: student.id
               },
             },
@@ -90,6 +93,9 @@
               res.status(200).json({
             name: student.name,
             email: student.email,
+            matric_number: student.matric_number ,
+            level: student.level ,
+            department : student.department ,
             accessToken 
           });
         

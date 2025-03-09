@@ -12,6 +12,23 @@ const getGroups = asyncHandler(async (req, res) => {
   
     res.status(200).json(groups);
   });
+
+// @desc Get groups by student id
+// @route GET /api/students/groups
+// @access Private
+const getStudentGroups = asyncHandler(async (req, res) => {
+
+
+    // Find groups where the student's id exists in the students array
+    const groups = await Group.find({ students: req.params.studentId }).populate({
+        path: "students",
+        select: "name email level matric_number department" // Select only the required fields
+    });
+
+    res.status(200).json(groups);
+});
+
+
   
 
 // @desc Create a new group
@@ -94,4 +111,4 @@ const deleteGroup = asyncHandler(async (req, res) => {
     res.status(200).json({ message: "Group deleted successfully" });
 });
 
-module.exports = { getGroups, createGroup, getGroup, updateGroup, deleteGroup };
+module.exports = { getGroups, createGroup, getGroup, updateGroup, deleteGroup , getStudentGroups  };

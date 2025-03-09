@@ -88,9 +88,14 @@ document.addEventListener("DOMContentLoaded", () => {
   
         if (response.ok) {
           localStorage.setItem("token", data.accessToken);
+          
           // Store additional info if needed
           localStorage.setItem("name", data.name);
+          localStorage.setItem("email" , data.email)
           localStorage.setItem("matric_number", data.matric_number);
+          localStorage.setItem("level" , data.level)
+          localStorage.setItem("department" , data.department)
+
           
           showMessage("Login successful! Redirecting...", "success");
           setTimeout(() => {

@@ -24,10 +24,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (response.ok) {
         const userData = await response.json();
         userNameElement.textContent = firstName || "Supervisor";
-      } else {
+      }
+      
+      else {
         userNameElement.textContent = "Supervisor";
       }
-    } catch (error) {
+    }
+    
+    catch (error) {
       console.error("Error fetching user details:", error);
       userNameElement.textContent = "Supervisor";
     }
