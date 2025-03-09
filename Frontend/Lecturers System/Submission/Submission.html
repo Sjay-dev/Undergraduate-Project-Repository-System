@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission List</title>
+    <link rel="stylesheet" href="Submission.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+
+
+    <!-- SideBar starts -->
+    <div class="sidebar">
+        <h2>Supervisor</h2>
+
+        <a href="/Frontend/Lecturers System/Supervisor DashBoard/Home.html">
+         <span class="material-symbols-outlined">home</span>Dashboard
+        </a>
+
+        <a href="/Frontend/Lecturers System/new Group/Group.html" >
+            <span class="material-symbols-outlined">group_add</span>Manage Groups
+        </a>
+
+        <a href="/Frontend/Lecturers System/Student's Project/student's Project.html">
+            <span class="material-symbols-outlined">two_pager</span> Student Projects
+        </a>
+
+        <a href="/Frontend/Lecturers System/Submission/Submission.html"class="active">
+        <span class="material-symbols-outlined">task</span>Submissions</a>
+
+        <a href="/Frontend/Lecturers System/Notification/Notification.html">
+            <span class="material-symbols-outlined">notifications</span>
+           Notifications
+        </a>
+
+        <a href="/Frontend/Lecturers System/Past Projects/Past Projects.html">
+            <span class="material-symbols-outlined">
+                history
+                </span>Past Projects</a>
+
+             
+
+
+        <a href="/Frontend/Lecturers System/Sign in/Login.html">
+            <span class="material-symbols-outlined">logout</span>
+            Logout
+        </a>
+    </div>
+<!-- SideBar ends -->
+
+    <!-- Content Starts -->
+    <div class="content">
+        <h1>Submission List</h1>
+
+
+        <div class="col-12 mb-3">
+
+            <div class="d-flex justify-content-between">
+                <input type="text" class="form-control w-25" placeholder="Search by Project Title">
+
+                <select class="form-control w-25">
+                    <option value="">Filter by Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="ongoing">Denied</option>
+                    <option value="approved">Approved</option>
+                    <option value="completed">Completed</option>
+                </select>
+                <input type="text" class="form-control w-25" placeholder="Search by Student Name">
+            </div>
+        </div>
+
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Group Number</th>
+                    <th>Project Title</th>
+                    <th>Chapter</th>
+                    <th>Date Submitted</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr >
+                    <td onclick="showGroupDetails('Group 1')">Group 1</td>
+                    <td onclick="showGroupDetails('Group 1')">AI in Education</td>
+                    <td onclick="showGroupDetails('Group 1')">Chapter 1</td>
+                    <td onclick="showGroupDetails('Group 1')" >2025-02-20</td>
+                    <td onclick="showGroupDetails('Group 1')" ><span class="badge pending">Pending Review</span></td>
+
+                    <td >
+                        <button class="button review">View</button>
+                        <button class="button download">Download</button>
+                        <button class="button feedback" onclick="showFeedbackDetails()">Feedback</button>
+                        <button class="button plagiarism">Check Plagiarism</button>
+                    </td>
+
+                </tr>
+
+                <tr >
+                    <td onclick="showGroupDetails('Group 2')">Group 2</td>
+                    <td onclick="showGroupDetails('Group 2')">Blockchain Security</td>
+                    <td onclick="showGroupDetails('Group 2')">Chapter 2</td>
+                    <td onclick="showGroupDetails('Group 2')">2025-02-18</td>
+                    <td onclick="showGroupDetails('Group 2')"><span class="badge approved">Approved</span></td>
+
+                    <td>
+                        <button class="button review">View</button>
+                        <button class="button download">Download</button>
+                        <button class="button feedback" onclick="showFeedbackDetails()">Feedback</button>
+                        <button class="button plagiarism">Check Plagiarism</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td onclick="showGroupDetails('Group 3')">Group 3</td>
+                    <td onclick="showGroupDetails('Group 3')">Quantum Computing Basics</td>
+                    <td onclick="showGroupDetails('Group 3')">Chapter 3</td>
+                    <td onclick="showGroupDetails('Group 3')">2025-02-22</td>
+                    <td onclick="showGroupDetails('Group 3')"><span class="badge revision">Requires Revision</span></td>
+
+                    <td>
+                        <button class="button review">View</button>
+                        <button class="button download">Download</button>
+                        <button class="button feedback" onclick="showFeedbackDetails()">Feedback</button>
+                        <button class="button plagiarism">Check Plagiarism</button>
+                    </td>
+                </tr>
+
+                <tr >
+                    <td onclick="showGroupDetails('Group 4')">Group 4</td>
+                    <td onclick="showGroupDetails('Group 4')">AI-Powered Chatbot</td>
+                    <td onclick="showGroupDetails('Group 4')">Chapter 4</td>
+                    <td onclick="showGroupDetails('Group 4')" >2025-02-25</td>
+                    <td onclick="showGroupDetails('Group 4')"><span class="badge pending">Pending Review</span></td>
+                    <td>
+                        <button class="button review">View</button>
+                        <button class="button download">Download</button>
+                        <button class="button feedback" onclick="showFeedbackDetails()">Feedback</button>
+                        <button class="button plagiarism">Check Plagiarism</button>
+                    </td>
+                </tr>
+
+            </tbody>
+            
+        </table>
+
+        <!-- Group Details Section -->
+        <div class="card p-3 mb-3" id="groupDetails" style="display:none;">
+            <h3>Group Details</h3>
+            <p><strong>Students:</strong> <span id="students"></span></p>
+            <p><strong>Department:</strong> <span id="dept"></span></p>
+            <p><strong>Project Topic:</strong> <span id="topic"></span></p>
+            <button class="btn btn-danger" onclick="closeGroupDetails()">Close</button>
+        </div>
+
+         <!-- Feedback Section -->
+<div class="card p-3 mb-3" id="feedbackCard" style="display:none;">
+    <h3>Feedback for <span id="feedbackGroup"></span></h3>
+
+    <!-- Dropdown -->
+    <select class="form-select my-2" id="feedbackAction">
+        <option value="Pending">Pending</option>
+        <option value="Approved">Approve</option>
+        <option value="Denied">Deny</option>
+    </select>
+
+    <!-- Feedback Textarea -->
+    <textarea class="form-control my-2" id="feedbackText" rows="3" placeholder="Write your feedback..."></textarea>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-around">
+        <button class="btn btn-danger" onclick="closeFeedbackCard()">Close</button>
+        <button class="btn btn-success" onclick="submitFeedback()">Confirm</button>
+    </div>
+</div>
+
+
+        
+    </div>
+    <!-- Content Ends -->
+
+    <script src="Submission.js"> </script>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

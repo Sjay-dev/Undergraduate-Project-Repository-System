@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home</title>
+  <link rel="stylesheet" href="Home.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+  <div class="container">
+    <!-- Side menu starts -->
+    <aside>
+      <!-- SideBar starts -->
+      <div class="sidebar">
+        <h2>Project Repository System</h2>
+        <a href="/Frontend/Student Repo System/Student DashBoard/Home.html" class="active">
+          <span class="material-symbols-outlined">home</span>
+          <h3>Dashboard</h3>
+        </a>
+        <a href="/Frontend/Student Repo System/Project/Project.html">
+          <span class="material-symbols-outlined">two_pager</span>
+          <h3>Project</h3>
+        </a>
+        <a href="/Frontend/Student Repo System/Supervisor/Supervisor.html">
+          <span class="material-symbols-outlined">person</span>
+          <h3>Supervisor</h3>
+        </a>
+        <a href="/Frontend/Student Repo System/Past Projects/Past Projects.html">
+          <span class="material-symbols-outlined">history</span>
+          <h3>Past Projects</h3>
+        </a>
+        <a href="/Frontend/Student Repo System/Sign in/Login.html">
+          <span class="material-symbols-outlined">logout</span>
+          <h3>Logout</h3>
+        </a>
+      </div>
+      <!-- SideBar stops -->
+    </aside>
+    <!-- Side menu end -->
+
+    <!-- Main Section -->
+    <main>
+      <h1>Student Dashboard</h1>
+
+      <!-- Start of Floating Cards -->
+      <div class="Cards">
+        <!-- div Project Members Starts -->
+        <div class="pMembers">
+          <span class="material-symbols-outlined">people</span>
+          <div class="middle">
+            <div class="left">
+              <h2>Project members:</h2>
+              <div id="groupMembers">
+                <!-- Group member names will be injected here -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- div Project Members Ends -->
+
+        <!-- div Project Starts -->
+        <div class="Project">
+          <span class="material-symbols-outlined">two_pager</span>
+          <div class="middle">
+            <div class="left">
+              <h2>Project Topic:</h2>
+              <h3 id="projectTopic">
+                <!-- Project topic will be injected here -->
+              </h3>
+            </div>
+          </div>
+        </div>
+        <!-- div Project Ends -->
+
+        <!-- div Supervisor Starts -->
+        <div class="Supervisor">
+          <span class="material-symbols-outlined">person</span>
+          <div class="middle">
+            <div class="left">
+              <h2>Supervisor:</h2>
+              <h3 id="projectSupervisor">
+                <!-- Supervisor name will be injected here -->
+              </h3>
+            </div>
+          </div>
+        </div>
+        <!-- div Supervisor Ends -->
+      </div>
+      <!-- End of Cards -->
+
+      <!-- Recents starts -->
+      <div class="pastProjects">
+        <h1>Recent Uploads</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Project Name</th>
+              <th>Project Date</th>
+              <th>Project Status</th>
+              <th>Technologies used</th>
+            </tr>
+          </thead>
+          <tbody id="uploadsTableBody">
+            <!-- Recent uploads rows will be injected here -->
+          </tbody>
+        </table>
+      </div>
+      <!-- Recents stops -->
+    </main>
+    <!-- Main Section end -->
+
+    <!-- Right Section starts -->
+    <div class="right">
+      <!-- div Profile starts -->
+      <div class="profile">
+        <div class="profile_Text">
+          <!-- Updated welcome message using dynamic data -->
+          <h3 id="welcomeUser">Good morning, <span id="userName"></span></h3>
+          <span class="material-symbols-outlined" onclick="toggleMenu()">account_circle</span>
+        </div>
+      </div>
+      <!-- div Profile stops -->
+
+      <!-- div sub Menu Wrapper starts -->
+      <div class="sub-menu-wrapper" id="sub-menu-wrapper">
+        <!-- div Sub Menu starts -->
+        <div class="sub-menu">
+          <div class="user-info">
+            <span class="material-symbols-outlined">account_circle</span>
+            <h3 id="profileName">Sanusi Joseph</h3>
+          </div>
+          <hr />
+          <a href="/Frontend/Student Repo System/Student DashBoard/subMenu Options/EditProfile/Edit Profile.html" class="sub-menu-link">
+            <span class="material-symbols-outlined">person</span>
+            <p>Edit Profile</p>
+          </a>
+          <a href="/Frontend/Student Repo System/Student DashBoard/subMenu Options/Settings/settings.html" class="sub-menu-link">
+            <span class="material-symbols-outlined">settings</span>
+            <p>Settings & Privacy</p>
+          </a>
+          <a href="/Frontend/Student Repo System/Student DashBoard/subMenu Options/Help & Support/help.html" class="sub-menu-link">
+            <span class="material-symbols-outlined">help</span>
+            <p>Help & Support</p>
+          </a>
+          <a href="/Frontend/Student Repo System/Sign in/Login.html" class="sub-menu-link">
+            <span class="material-symbols-outlined">logout</span>
+            <p>Logout</p>
+          </a>
+        </div>
+        <!-- div sub menu ends -->
+      </div>
+      <!-- End of div sub menu wrapper -->
+
+      <!-- Start of notification wrapper -->
+      <div class="notification-wrapper">
+        <!-- notification panel starts -->
+        <div class="notification-panel">
+          <div class="panel-header">
+            <h3>Notifications</h3>
+          </div>
+          <ul class="notification-list">
+            <li>
+              <div>
+                <strong>No notification at the moment</strong>
+                <p>Now</p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Tf is this?</strong>
+                <p>1hr ago</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- notification panel ends -->
+      </div>
+      <!-- End of notification wrapper -->
+    </div>
+    <!-- End of Right Section -->
+  </div>
+
+  <script src="Home.js"></script>
+</body>
+</html>
