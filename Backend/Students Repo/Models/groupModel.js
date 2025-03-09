@@ -23,6 +23,10 @@ const groupSchema = new mongoose.Schema(
       required: [true, "Please add project topic"]
     },
 
+    projectStatus: {
+      type: String,
+      required: true,
+    },
   
 
     students: [
@@ -37,6 +41,8 @@ const groupSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add name of lecturer"]
     },
+
+ 
   
   
   

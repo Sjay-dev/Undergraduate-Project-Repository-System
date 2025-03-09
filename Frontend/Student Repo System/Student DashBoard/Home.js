@@ -49,9 +49,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         const group = studentGroups[0]; // Assuming the student is in one group
 
         // Update project topic
-        projectTopicContainer.textContent = group.projectTopic || "No project assigned yet";
+        localStorage.setItem("projectTopic", group.projectTopic);
+        localStorage.setItem("lecturer", group.lecturer);
+        localStorage.setItem("projectStatus", group.projectStatus);
 
-        projectSupervisorContainer.textContent = group.lecturer || "No supervisor assigned yet";
+
+        const Topic = localStorage.getItem("projectTopic");
+        const Supervisor = localStorage.getItem("lecturer");
+
+
+
+        projectTopicContainer.textContent = Topic || "No project assigned yet";
+
+        projectSupervisorContainer.textContent = Supervisor || "No supervisor assigned yet";
 
 
         // Update group members

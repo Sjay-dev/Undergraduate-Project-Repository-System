@@ -6,15 +6,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     const projectDescriptionInput = document.getElementById("projectDescription");
     const projectStatus = document.getElementById("projectStatus");
     const projectObjectiveInput = document.getElementById("projectObjective");
-    const projectRoleSelect = document.getElementById("projectRole");
     const documentUploadInput = document.getElementById("documentUpload");
+    const updateProjectTopicButton = document.getElementById("updateProjectTopic");
+    const documentationForm = document.getElementById("documentationForm");
 
     if (!token || !studentID) {
         console.error("User not authenticated. Token or Student ID missing.");
         return;
     }
 
-    // Fetch group data and populate project topic
     async function fetchGroupData() {
         try {
             const response = await fetch(`http://localhost:5000/api/students/${studentID}/groups`, {
@@ -29,28 +29,48 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const studentGroups = await response.json();
             if (studentGroups.length > 0) {
-                const group = studentGroups[0]; // Assuming the student is in one group
-                projectTopicInput.value = group.projectTopic || "";
+                const group = studentGroups[0];
+                projectTopicInput.value = group.projectTopic || "No project topic yet";
+                projectStatus.textContent = group.projectStatus || "No project status yet";
             }
         } catch (error) {
             console.error("Error fetching group details:", error);
         }
     }
 
-    // Handle form submission to update project details
-    document.getElementById("projectForm")?.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    updateProjectTopicButton.addEventListener("click", async () => {
+        const newProjectTopic = projectTopicInput.value.trim();
+        if (!newProjectTopic) return alert("Project topic cannot be empty");
 
+        try {   
+            const response = await fetch(`http://localhost:5000/api/projects/${studentID}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ projectTopic: newProjectTopic }),
+            });
+
+            if (!response.ok) throw new Error("Failed to update project topic.");
+
+            alert("Project topic updated successfully!");
+        } catch (error) {
+            console.error("Error updating project topic:", error);
+            alert("An error occurred while updating project topic.");
+        }
+    });
+
+    documentationForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
         const projectData = {
-            projectTopic: projectTopicInput.value.trim(),
             projectDescription: projectDescriptionInput.value.trim(),
-            projectStatus: projectStatus.textContent.trim(),
             projectObjective: projectObjectiveInput.value.trim(),
-            projectRoles: Array.from(projectRoleSelect.selectedOptions).map(option => option.value),
         };
 
         try {
-            const response = await fetch(`http://localhost:5000/api/projects/${studentID}`, {
+            const response = await fetch(`http://localhost:5000/api/projects/${studentID}/documentation`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -59,17 +79,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 body: JSON.stringify(projectData),
             });
 
-            if (!response.ok) throw new Error("Failed to update project details.");
+            if (!response.ok) throw new Error("Failed to update documentation.");
 
-            alert("Project details updated successfully!");
+            alert("Documentation updated successfully!");
         } catch (error) {
-            console.error("Error updating project details:", error);
-            alert("An error occurred while updating project details.");
+            console.error("Error updating documentation:", error);
+            alert("An error occurred while updating documentation.");
         }
     });
 
-    // Handle document upload
-    documentUploadInput?.addEventListener("change", async (e) => {
+    documentUploadInput.addEventListener("change", async (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
@@ -94,6 +113,5 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // Initialize Data Fetching
     fetchGroupData();
 });

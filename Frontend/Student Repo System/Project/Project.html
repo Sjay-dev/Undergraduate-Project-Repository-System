@@ -4,217 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project</title>
-
     <link rel="stylesheet" href="Project.css">
-
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-
+    <style>
+        button {
+            background-color: #ffcc00;
+            color: #333;
+            border: none;
+            padding: 10px 15px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #ffdd44;
+        }
+    </style>
 </head>
 <body>
-  
     <div class="container">
-        <!-- Side menu -->
-         <aside>
-  
-    
-                <!-- SideBar starts -->
-        <div class="sidebar">
-
-            <h2>Project Repository System</h2>
-            
-            <a href="/Frontend/Student Repo System/Student DashBoard/Home.html" >
-                  <span class="material-symbols-outlined">home</span>
-                  <h3>Dashboard</h3>
-            </a>
-              
-
+        <aside>
+            <div class="sidebar">
+                <h2>Project Repository System</h2>
+                <a href="/Frontend/Student Repo System/Student DashBoard/Home.html">
+                    <span class="material-symbols-outlined">home</span>
+                    <h3>Dashboard</h3>
+                </a>
                 <a href="/Frontend/Student Repo System/Project/Project.html" class="active">
                     <span class="material-symbols-outlined">two_pager</span>
                     <h3>Project</h3>
                 </a>
+                <a href="/Frontend/Student Repo System/Supervisor/Supervisor.html">
+                    <span class="material-symbols-outlined">person</span>
+                    <h3>Supervisor</h3>
+                </a>
+                <a href="/Frontend/Student Repo System/Past Projects/Past Projects.html">
+                    <span class="material-symbols-outlined">history</span>
+                    <h3>Past Projects</h3>
+                </a>
+                <a href="/Frontend/Student Repo System/Sign in/Login.html">
+                    <span class="material-symbols-outlined">logout</span>
+                    <h3>Logout</h3>
+                </a>
+            </div>
+        </aside>
 
-                    <a href="/Frontend/Student Repo System/Supervisor/Supervisor.html">
-                        <span class="material-symbols-outlined">person</span>
-                        <h3>Supervisor</h3>
-                    </a>
-
-                        <a href="/Frontend/Student Repo System/Past Projects/Past Projects.html">
-                            <span class="material-symbols-outlined">history</span>
-                            <h3>Past Projects</h3>
-                        </a>
-
-                            <a href="/Frontend/Student Repo System/Sign in/Login.html">
-                                <span class="material-symbols-outlined">logout</span>
-                                <h3>Logout</h3>
-                            </a>
-                            
-        </div>
-        <!-- SideBar stops -->
-         </aside>
-    
-         <!-- Side menu end -->
-
-         <!-- Main input Starts -->
-         <main>
-
-            <!-- Project Section starts -->
-
-            <form action="POST & PUT" class="projectSection">
-
+        <main>
+            <form id="projectForm" class="projectSection">
                 <div class="logo">
- <span class="material-symbols-outlined">two_pager</span>
-                <h2>Project Section</h2>
-
+                    <span class="material-symbols-outlined">two_pager</span>
+                    <h2>Project Section</h2>
                 </div>
-                 
-           <label for="Project Topic">Project Topic
-            <input id="projectTopic" type="text">
-           </label>
-           
-         
-
-           <label for="Project Status">
-            Project Status:
-            <label id="projectStatus" for="psColor"> Pending </label>
-           </label>
-
+                <label for="projectTopic">Project Topic
+                    <input id="projectTopic" type="text">
+                </label>
+                <button type="button" id="updateProjectTopic">Update</button>
+                
+                <label for="projectStatus">Project Status:
+                    <label id="projectStatus"></label>
+                </label>
             </form>
 
-            <!-- Project Section ends -->
-
-           
-
-           <!-- Documentation Section Starts -->
-
-           <form action="#" class="documentationSection">
-            <div class="logo">
-                 <span class="material-symbols-outlined">
-                description
-                </span>
-            <h2>Documentation Section</h2>
-            </div>
-           
-
-            <div id="technologies">
-
-                <div class="select-btn">
-                    <label class="btn-text">Select technologies used</label>
-                    <span class="arrow-down">▼</span>
+            <form id="documentationForm" class="documentationSection">
+                <div class="logo">
+                    <span class="material-symbols-outlined">description</span>
+                    <h2>Documentation Section</h2>
                 </div>
-   
-                <ul class="list-items">
-
-                    <li class="item">
-
-                        <span class="checkbox"></span>
-                        <label class="item-text">Html,Css</label>
-                        
-
-                    </li>
-
-                    <li class="item">
-                        <span class="checkbox"></span>
-                        <label class="item-text">JavaScript</label>
-                    </li>
-
-                    <li class="item">
-                        
-                        <span class="checkbox"></span>
-                        <label class="item-text">PhP</label>
-
-                    </li>
-
-                    <li class="item">
-                        
-                        <span class="checkbox"></span>
-                        <label class="item-text">React Native(JavaScript)</label>
-
-                    </li>
-
-                  <li class="item">
-                        
-                        <span class="checkbox"></span>
-                        <label class="item-text">Flutter(Dart)</label>
-
-                    </li>
-
-                    <li class="item">
-                        
-                        <span class="checkbox"></span>
-                        <label class="item-text">Java</label>
-
-                    </li>
-
-                    <li class="item">
-                        
-                        <span class="checkbox"></span>
-                        <label class="item-text">Kotin</label>
-
-                    </li>
-
-                    <li class="item">
-                        
-                        <span class="checkbox"></span>
-                        <label class="item-text">Swift</label>
-
-                    </li>
-
-                    <li class="item">
-                        
-                        <span class="checkbox"></span>
-                        <label class="item-text">Firebase</label>
-
-                    </li>
-
-                    <li class="item">
-                        
-                        <span class="checkbox"></span>
-                        <label class="item-text">MySQL</label>
-
-                    </li>
-
-                    <li class="item">
-                        
-                        <span class="checkbox"></span>
-                        <label class="item-text">MongoDb</label>
-
-                    </li>
-                </ul>
+                <label for="projectDescription">Project Description
+                    <textarea id="projectDescription" name="projectDescription"></textarea>
+                </label>
                 
-            </div>
-
-
-            <Label for="Chapter Number">
-                Chapter Number
-             <input type="text">
-            </Label>
-
-            <label for="Project Description">Project Description
-                <textarea id="projectDescription" name="Project Description"></textarea>
-               </label>
-
-                 
-               <Label for="Documentation">
-                Document Upload
-             <input type="file">
-               </Label>
-
-            <label for="Project Objective">Project Objective
-            <textarea id="projectObjective" name="Project Objective"></textarea>
-           </label>  
-   
-           
-           
-           </form>
-            
-
-       
-
-         </main>
-    
-         
-
-         <script src="Project.js"></script>
-
+                <label for="projectObjective">Project Objective
+                    <textarea id="projectObjective" name="projectObjective"></textarea>
+                </label>
+                
+                <label for="documentUpload">Document Upload
+                    <input type="file" id="documentUpload">
+                </label>
+                
+                <button type="submit" id="submitDocumentation">Submit</button>
+            </form>
+        </main>
+    </div>
+    <script src="Project.js"></script>
 </body>
 </html>

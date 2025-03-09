@@ -20,9 +20,9 @@ const getGroups = asyncHandler(async (req, res) => {
 const createGroup = asyncHandler(async (req, res) => {
     console.log("Console output", req.body);
 
-    const { groupName, department, projectTopic, students , lecturer} = req.body;
+    const { groupName, department, projectTopic, projectStatus, students , lecturer} = req.body;
 
-    if (!groupName || !department || !projectTopic || !students , !lecturer) {
+    if (!groupName || !department || !projectTopic || !projectStatus || !students , !lecturer) {
         res.status(400);
         throw new Error("All fields must be filled");
     }
@@ -31,6 +31,7 @@ const createGroup = asyncHandler(async (req, res) => {
         groupName,
         department,
         projectTopic,
+        projectStatus,
         students,
         lecturer,
         user_id: req.user.id

@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const groupName = document.getElementById("groupName");
   const department = document.getElementById("department");
   const projectTopic = document.getElementById("projectTopic");
+  const projectStatus = "Pending";
   const groupTableBody = document.getElementById("groupTableBody");
   const searchInput = document.getElementById("studentSearch");
   const searchButton = document.getElementById("searchButton");
@@ -99,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
       groupName: groupName.value,
       department: department.value,
       projectTopic: projectTopic.value,
+      projectStatus: projectStatus,
       students: selectedStudents,
       lecturer: fullName
     };
