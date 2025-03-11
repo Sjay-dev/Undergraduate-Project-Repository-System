@@ -2,13 +2,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const token = localStorage.getItem("token");
     const studentID = localStorage.getItem("studentID");
 
-    const projectTopicInput = document.getElementById("projectTopic");
+    // Global variable to store fetched group data
+    let groupData = null;
+
+    const projectTopicElement = document.getElementById("projectTopic");
+    const projectStatusElement = document.getElementById("projectStatus");
     const projectDescriptionInput = document.getElementById("projectDescription");
-    const projectStatus = document.getElementById("projectStatus");
     const projectObjectiveInput = document.getElementById("projectObjective");
+    const chapterNumberInput = document.getElementById("chapterNumber");
     const documentUploadInput = document.getElementById("documentUpload");
-    const updateProjectTopicButton = document.getElementById("updateProjectTopic");
     const documentationForm = document.getElementById("documentationForm");
+    const chapterStatus = "Pending Review";
 
     if (!token || !studentID) {
         console.error("User not authenticated. Token or Student ID missing.");
@@ -29,89 +33,57 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const studentGroups = await response.json();
             if (studentGroups.length > 0) {
-                const group = studentGroups[0];
-                projectTopicInput.value = group.projectTopic || "No project topic yet";
-                projectStatus.textContent = group.projectStatus || "No project status yet";
+                // Store the fetched group data in the global variable
+                groupData = studentGroups[0];
+                projectTopicElement.textContent = groupData.projectTopic || "No project topic yet";
+                projectStatusElement.textContent = groupData.projectStatus || "No project status yet";
             }
         } catch (error) {
             console.error("Error fetching group details:", error);
         }
     }
 
-    updateProjectTopicButton.addEventListener("click", async () => {
-        const newProjectTopic = projectTopicInput.value.trim();
-        if (!newProjectTopic) return alert("Project topic cannot be empty");
-
-        try {   
-            const response = await fetch(`http://localhost:5000/api/projects/${studentID}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ projectTopic: newProjectTopic }),
-            });
-
-            if (!response.ok) throw new Error("Failed to update project topic.");
-
-            alert("Project topic updated successfully!");
-        } catch (error) {
-            console.error("Error updating project topic:", error);
-            alert("An error occurred while updating project topic.");
-        }
-    });
-
     documentationForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        
-        const projectData = {
-            projectDescription: projectDescriptionInput.value.trim(),
-            projectObjective: projectObjectiveInput.value.trim(),
+
+        // Ensure groupData is available before submitting
+        if (!groupData) {
+            alert("Group data is not available yet. Please try again later.");
+            return;
+        }
+
+        // Use the fetched projectTopic from groupData in your formData
+        const formData = {
+            projectTopic: groupData.projectTopic,
+            projectDescription: projectDescriptionInput.value,
+            projectObjective: projectObjectiveInput.value,
+            chapterNumber: chapterNumberInput.value,
+            chapterDocument: documentUploadInput.value,
+            chapterStatus: chapterStatus
         };
 
-        try {
-            const response = await fetch(`http://localhost:5000/api/projects/${studentID}/documentation`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(projectData),
-            });
-
-            if (!response.ok) throw new Error("Failed to update documentation.");
-
-            alert("Documentation updated successfully!");
-        } catch (error) {
-            console.error("Error updating documentation:", error);
-            alert("An error occurred while updating documentation.");
-        }
-    });
-
-    documentUploadInput.addEventListener("change", async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const formData = new FormData();
-        formData.append("document", file);
+        console.log("FormData", formData);
 
         try {
-            const response = await fetch(`http://localhost:5000/api/projects/${studentID}/upload`, {
+            const response = await fetch("http://localhost:5000/api/documentations", {
                 method: "POST",
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
                 },
-                body: formData,
+                body: JSON.stringify(formData),
             });
 
-            if (!response.ok) throw new Error("Failed to upload document.");
+            console.log("Response", response);
+            if (!response.ok) throw new Error("Failed to submit documentation.");
 
-            alert("Document uploaded successfully!");
+            alert("Documentation submitted successfully!");
         } catch (error) {
-            console.error("Error uploading document:", error);
-            alert("An error occurred while uploading the document.");
+            console.error("Error submitting documentation:", error);
+            alert("An error occurred while submitting documentation.");
         }
     });
 
-    fetchGroupData();
+    // Call the fetch function to load group data on page load
+    await fetchGroupData();
 });

@@ -26,6 +26,7 @@
 </head>
 <body>
     <div class="container">
+
         <aside>
             <div class="sidebar">
                 <h2>Project Repository System</h2>
@@ -58,21 +59,29 @@
                     <span class="material-symbols-outlined">two_pager</span>
                     <h2>Project Section</h2>
                 </div>
+
                 <label for="projectTopic">Project Topic
-                    <input id="projectTopic" type="text">
+                    <label id="projectTopic"></label>
                 </label>
-                <button type="button" id="updateProjectTopic">Update</button>
                 
                 <label for="projectStatus">Project Status:
                     <label id="projectStatus"></label>
                 </label>
+                
             </form>
 
             <form id="documentationForm" class="documentationSection">
+
+
+
+
                 <div class="logo">
                     <span class="material-symbols-outlined">description</span>
                     <h2>Documentation Section</h2>
                 </div>
+
+            
+
                 <label for="projectDescription">Project Description
                     <textarea id="projectDescription" name="projectDescription"></textarea>
                 </label>
@@ -80,10 +89,11 @@
                 <label for="projectObjective">Project Objective
                     <textarea id="projectObjective" name="projectObjective"></textarea>
                 </label>
-                
-                <label for="documentUpload">Document Upload
-                    <input type="file" id="documentUpload">
+
+                <label for="Chapter Number">Chapter Number  
+                    <input id="chapterNumber" type="text" placeholder="(e.g. Chapter 1)">
                 </label>
+            
                 
                 <button type="submit" id="submitDocumentation">Submit</button>
             </form>
