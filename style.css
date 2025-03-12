@@ -5,48 +5,50 @@
     --clr-primary : #0d1daf;
     --clr-lightBackground: #d8d8d8e6;
     --clr-darkBackground: #13141dcc;
-
-    
     --card-border-radius: 2rem;
     --border-radius-1 : 0.4rem;
     --border-radius-2 : 0.8rem;
     --border-radius-3 : 1.2rem;
-
     --card-padding: 1.8rem;
     --padding: 1.2rem;
     --box-shadow: 0 2rem 3rem var (rgba(132,139,200,0.18))
 }
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    border: 0;
-    list-style: none;
-    appearance: none;
-}
-
-body{
+body {
     font-family: sans-serif;
     width: 100vw;
-    height: 100vw;
-    font-size: 0.88rem ;
+    height: 100vh;
+    font-size: 0.88rem;
     user-select: none;
     overflow-x: hidden;
-    background: var(--clr-lightBackground);
+    background-color: var(--clr-lightBackground) !important;
 }
 
-.container{
-    display:  grid;
-    width: 100%;
-    gap: 1.8rem;
-    grid-template-columns: 14rem auto 14rem;
-    margin: 0 auto;
-}
 
-a{
-    color: black
+.sidebar {
+    width: 260px;
+    background: white;
+    color: black;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;  /* Ensures the sidebar is aligned to the left */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.sidebar a {
+    display: flex;
+    color: black;
+    text-decoration: none;
+    padding: 12px;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    transition: 0.3s;
 }
 
 h1{
@@ -67,256 +69,39 @@ h5{
     font-size: 0.77rem;
 }
 
-
-
-
-/* 
-SideBar starts
-*/
-
-aside{
-height: 100vh;
+.sidebar > a > span
+{
+margin-right: 10px;
 }
 
-
-
-aside .sidebar {
-width: 260px;
-background: white;
-color: black;
-padding: 20px;
-height: 100vh;
-position: fixed;
-}
-
-
-.sidebar h2 {
-text-align: center;
-margin-bottom: 20px;
-}
-
-
-aside .sidebar a {
-display: flex;
-align-items: center;
-gap: 1rem;
-text-decoration: none;
-color: black;
-padding: 0.5rem 1rem;
-transition: all 0.2s ease-in-out;
-border-radius: 5px;
-height: 3.2rem;
-}
-
-aside .sidebar a:last-child {
-margin-top: auto; 
-}
-
-aside .sidebar a.active{
-background-color: #b5b8ba;
-color: var(--clr-primary);
-border-left: 5px solid var(--clr-primary);
-}
-
-aside .sidebar a:hover {
-color: var(--clr-primary);
-}
-
-aside .sidebar a:hover span{
-font-size: 1.6rem;
-display: flex;
-align-items: center;
-justify-content: center;
-margin-left: 1rem;
-transition: .2s ease;
-}
-
-
-
-/* SideBar Styling ends */
-
-
-
-/* ----Project Section Styling starts---- */
-
-main form {
-    display: grid;
-    grid-template-columns: 1fr 2fr; /* Label takes 1fr, Input takes 2fr */
-    gap: 1.6rem 1rem; 
-    background-color: white;
-    padding: var(--card-padding);
-    border-radius: var(--border-radius-2);
-    margin-top: 1rem;
-    margin-left: 30px;
-}
-
-
-main form label {
-    color: black;
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-    
-}
-
-main form input, 
-main form textarea, 
-main form select {
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #d00a0a;
-    border-radius: var(--border-radius-1);
-    background: white;
-    width: 100%; 
-}
-
-main form textarea {
-    resize: vertical; 
-    min-height: 4rem;
-}
-
-.logo{
-    
-    display: flex; /* Enable flexbox for child alignment */
-    align-items: center; /* Vertically center icon and text */
-    
-}
-
-main form > div {
-    grid-column: span 2; /* Headings span across both columns */
-    margin-bottom: 1rem;
-
-}
-
-main form > div span{
-    display: inline-block; /* Ensure proper spacing */
-    background: var(--clr-primary);
-    padding: 0.5rem;
-    border-radius: 50%;
-    color: white;
-    font-size: 2rem;
-    margin-right: 0.8rem; /* Space between icon and text */
-}
-
-
-main form label[for="Project members"] {
-    display: block;
-    margin-bottom: 1rem; 
-}
-
-main form label[for="psColor"] {
-color: red;
-}
-
-.select-btn {
-    display: flex;
-    height: 50px;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: white;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    width: 100%; 
-}
-
-
-.select-btn .btn-text {
-    font-size: 17px;
-    font-weight: 400;
-    margin-left: 10px;
-}
-
-.select-btn .arrow-down {
-    display: flex;
-    height: 21px;
-    width: 21px;
-    color: #fff;
-    font-size: 14px;
-    background: var(--clr-primary);
-    align-items: center;
-    justify-content: center;
-    transition: 0.3s;
-}
-
-
-
-/* Open dropdown effect */
-.list-items {
-    display: none;
-    position: absolute;
-    margin-top: 10px; 
-    border-radius: 8px;
-    box-shadow:  var(--box-shadow);
-    width: 100%; 
-    max-width: 400px; 
-    transition: opacity 0.5s ease-in-out;
-}
-
-
-/* Show dropdown when .show class is added */
-.list-items.show {
-    position: relative;
-    width: auto;
-    height: auto; 
-    display: flex;
-    flex-direction: column;
-
-}
-
-.list-items .item {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    height: 50px;
-    cursor: pointer;
-    transition: 0.3s;
-    padding: 0 15px;
-    border-radius: 8px;
-}
-
-.list-items .item:hover {
-    background-color: #4394ce3e;
-}
-
-.item .item-text {
-    font-size: 16px;
-    font-weight: 400;
-    color: black;
-    margin-left: 0px;
-}
-
-.item .checkbox {
+.sidebar a:hover span{
+    font-size: 1.6rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 16px;
-    width: 16px;
-    border-radius: 4px;
-    margin-right: 12px;
-    border: 1.5px solid #888; 
-    background-color: white; 
-    transition: all 0.3s ease-in-out;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: .2s ease;
 }
 
-.item.checked .checkbox {
-    background-color: var(--clr-primary);
-    border-color: var(--clr-primary);
+.sidebar a:hover {
+    color: var(--clr-primary);
 }
 
-
-
-/* Rotate arrow when dropdown is open */
-.select-btn.open .arrow-down {
-    transform: rotate(180deg);
-    transition: transform 0.3s ease-in-out;
+ .sidebar a.active{
+    background-color: #b5b8ba;
+    color: var(--clr-primary);
+    border-left: 5px solid var(--clr-primary);
 }
 
+ .sidebar a:last-child {
+    margin-top: auto; 
+}
 
-
-
-
-
-
-
-
+/* Content Section */
+.content {
+    margin-left: 280px; /* Adjust based on sidebar width */
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+}

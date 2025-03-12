@@ -3,102 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project</title>
-    <link rel="stylesheet" href="Project.css">
+    <title>Project Repository</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <style>
-        button {
-            background-color: #ffcc00;
-            color: #333;
-            border: none;
-            padding: 10px 15px;
-            margin-top: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #ffdd44;
-        }
-    </style>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="Project.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Project Repository System</h2>
+            <a href="/Frontend/Student Repo System/Student DashBoard/Home.html">
+                <span class="material-symbols-outlined">home</span>
+                <h3>Dashboard</h3>
+            </a>
+            <a href="/Frontend/Student Repo System/Project/Project.html" class="active">
+                <span class="material-symbols-outlined">two_pager</span>
+                <h3>Project</h3>
+            </a>
+            <a href="/Frontend/Student Repo System/Supervisor/Supervisor.html">
+                <span class="material-symbols-outlined">person</span>
+                <h3>Supervisor</h3>
+            </a>
+            <a href="/Frontend/Student Repo System/Past Projects/Past Projects.html">
+                <span class="material-symbols-outlined">history</span>
+                <h3>Past Projects</h3>
+            </a>
+            <a href="/Frontend/Student Repo System/Sign in/Login.html">
+                <span class="material-symbols-outlined">logout</span>
+                <h3>Logout</h3>
+            </a>
+        </div>
+        
+        <!-- Main Content -->
+        <main class="content p-4 w-100">
+            <div class="container">
 
-        <aside>
-            <div class="sidebar">
-                <h2>Project Repository System</h2>
-                <a href="/Frontend/Student Repo System/Student DashBoard/Home.html">
-                    <span class="material-symbols-outlined">home</span>
-                    <h3>Dashboard</h3>
-                </a>
-                <a href="/Frontend/Student Repo System/Project/Project.html" class="active">
-                    <span class="material-symbols-outlined">two_pager</span>
-                    <h3>Project</h3>
-                </a>
-                <a href="/Frontend/Student Repo System/Supervisor/Supervisor.html">
-                    <span class="material-symbols-outlined">person</span>
-                    <h3>Supervisor</h3>
-                </a>
-                <a href="/Frontend/Student Repo System/Past Projects/Past Projects.html">
-                    <span class="material-symbols-outlined">history</span>
-                    <h3>Past Projects</h3>
-                </a>
-                <a href="/Frontend/Student Repo System/Sign in/Login.html">
-                    <span class="material-symbols-outlined">logout</span>
-                    <h3>Logout</h3>
-                </a>
+                <h2 class="mb-3">Project Section</h2>
+
+                <form class="card p-4 shadow-sm mb-4">
+                        
+                        <div class="form-group">
+                            <label><strong>Project Topic:</strong> <span id="projectTopic"></span></label>
+                        </div>
+
+                        <div class="form-group">
+                            <label><strong>Project Status:</strong> <span id="projectStatus"></span></label>
+                        </div>
+                 
+                </form>
+
+
+
+
+                <h2 class="mb-4">Documentation Submission</h2>
+                
+                <form id="documentationForm" class="card p-4 shadow-sm mb-4">
+                    <div class="form-group">
+                        <label for="projectDescription">Project Description</label>
+                        <textarea id="projectDescription" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectObjective">Project Objective</label>
+                        <textarea id="projectObjective" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="chapterNumber">Chapter Number</label>
+                        <input type="text" id="chapterNumber" class="form-control" placeholder="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="documentUpload">Upload Document</label>
+                        <input type="file" id="documentUpload" class="form-control-file">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                
+                <h3 class="mt-5">Existing Documentation</h3>
+                <table class="table table-bordered mt-3 shadow-sm">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Project Topic</th>
+                            <th>Department</th>
+                            <th>Chapter submitted</th>
+                            <th>Date submitted</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="groupTableBody">
+                       
+                    </tbody>
+                </table>
             </div>
-        </aside>
-
-        <main>
-            <form id="projectForm" class="projectSection">
-                <div class="logo">
-                    <span class="material-symbols-outlined">two_pager</span>
-                    <h2>Project Section</h2>
-                </div>
-
-                <label for="projectTopic">Project Topic
-                    <label id="projectTopic"></label>
-                </label>
-                
-                <label for="projectStatus">Project Status:
-                    <label id="projectStatus"></label>
-                </label>
-                
-            </form>
-
-            <form id="documentationForm" class="documentationSection">
-
-
-
-
-                <div class="logo">
-                    <span class="material-symbols-outlined">description</span>
-                    <h2>Documentation Section</h2>
-                </div>
-
-            
-
-                <label for="projectDescription">Project Description
-                    <textarea id="projectDescription" name="projectDescription"></textarea>
-                </label>
-                
-                <label for="projectObjective">Project Objective
-                    <textarea id="projectObjective" name="projectObjective"></textarea>
-                </label>
-
-                <label for="Chapter Number">Chapter Number  
-                    <input id="chapterNumber" type="text" placeholder="(e.g. Chapter 1)">
-                </label>
-            
-                
-                <button type="submit" id="submitDocumentation">Submit</button>
-            </form>
         </main>
     </div>
+
     <script src="Project.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

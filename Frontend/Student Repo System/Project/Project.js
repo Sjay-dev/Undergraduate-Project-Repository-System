@@ -2,15 +2,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const token = localStorage.getItem("token");
     const studentID = localStorage.getItem("studentID");
 
-    // Global variable to store fetched group data
-    let groupData = null;
+    let groupData = null; // Global variable to store fetched group data
 
-    const projectTopicElement = document.getElementById("projectTopic");
-    const projectStatusElement = document.getElementById("projectStatus");
-    const projectDescriptionInput = document.getElementById("projectDescription");
-    const projectObjectiveInput = document.getElementById("projectObjective");
-    const chapterNumberInput = document.getElementById("chapterNumber");
-    const documentUploadInput = document.getElementById("documentUpload");
+    const projectTopic = document.getElementById("projectTopic");
+    const projectStatus = document.getElementById("projectStatus");
+    const projectDescription = document.getElementById("projectDescription");
+    const projectObjective = document.getElementById("projectObjective");
+    const chapterNumber = document.getElementById("chapterNumber");
+    const documentUpload = document.getElementById("documentUpload");
     const documentationForm = document.getElementById("documentationForm");
     const chapterStatus = "Pending Review";
 
@@ -33,10 +32,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const studentGroups = await response.json();
             if (studentGroups.length > 0) {
-                // Store the fetched group data in the global variable
-                groupData = studentGroups[0];
-                projectTopicElement.textContent = groupData.projectTopic || "No project topic yet";
-                projectStatusElement.textContent = groupData.projectStatus || "No project status yet";
+                groupData = studentGroups[0]; // Store fetched data globally
+                projectTopic.textContent = groupData.projectTopic || "No project topic yet";
+                projectStatus.textContent = groupData.projectStatus || "No project status yet";
             }
         } catch (error) {
             console.error("Error fetching group details:", error);
@@ -46,44 +44,47 @@ document.addEventListener("DOMContentLoaded", async () => {
     documentationForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        // Ensure groupData is available before submitting
         if (!groupData) {
             alert("Group data is not available yet. Please try again later.");
             return;
         }
 
-        // Use the fetched projectTopic from groupData in your formData
-        const formData = {
-            projectTopic: groupData.projectTopic,
-            projectDescription: projectDescriptionInput.value,
-            projectObjective: projectObjectiveInput.value,
-            chapterNumber: chapterNumberInput.value,
-            chapterDocument: documentUploadInput.value,
-            chapterStatus: chapterStatus
-        };
+        const file = documentUpload.files[0]; // Get the selected file
 
-        console.log("FormData", formData);
+        if (!file) {
+            alert("Please select a file to upload.");
+            return;
+        }
+
+        // ✅ Use FormData to handle file uploads
+        const formData = new FormData();
+        formData.append("projectTopic", groupData.projectTopic);
+        formData.append("projectDescription", projectDescription.value);
+        formData.append("projectObjective", projectObjective.value);
+        formData.append("chapterNumber", chapterNumber.value);
+        formData.append("chapterDocument", file); // Attach the file
+        formData.append("chapterStatus", chapterStatus);
+
+        console.log("FormData prepared:", formData);
 
         try {
             const response = await fetch("http://localhost:5000/api/documentations", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + token,
+                    Authorization: `Bearer ${token}`, // Do NOT set "Content-Type" manually for FormData
                 },
-                body: JSON.stringify(formData),
+                body: formData,
             });
 
-            console.log("Response", response);
             if (!response.ok) throw new Error("Failed to submit documentation.");
 
-            alert("Documentation submitted successfully!");
+            alert("✅ Documentation submitted successfully!");
         } catch (error) {
             console.error("Error submitting documentation:", error);
-            alert("An error occurred while submitting documentation.");
+            alert("❌ An error occurred while submitting documentation.");
         }
     });
 
-    // Call the fetch function to load group data on page load
+    // Fetch group data when the page loads
     await fetchGroupData();
 });
