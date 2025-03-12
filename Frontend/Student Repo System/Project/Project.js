@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
     const token = localStorage.getItem("token");
     const studentID = localStorage.getItem("studentID");
 
@@ -15,13 +16,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const documentUpload = document.getElementById("documentUpload");
     const groupTableBody = document.getElementById("groupTableBody");
 
-    // Ensure user is authenticated
     if (!token || !studentID) {
         console.error("❌ User not authenticated. Token or Student ID missing.");
         return;
     }
 
-    /** Fetch student’s group data **/
     async function fetchGroupData() {
         try {
             const response = await fetch(`http://localhost:5000/api/students/${studentID}/groups`, {
@@ -48,96 +47,71 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    /** Upload file and return file ID **/
-/** Upload file when selected */
-documentUpload.addEventListener("change", async (event) => {
-    const file = event.target.files[0];
+    documentUpload.addEventListener("change", async (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            alert("❌ No file selected.");
+            return;
+        }
 
-    if (!file) return; // ✅ No file selected
+        const formData = new FormData();
+        formData.append("file", file);
 
+        try {
+            const response = await fetch("http://localhost:5000/api/upload", {
+                method: "POST",
+                body: formData,
+            });
 
-        const fileId = await uploadFile(file);
-        localStorage.setItem("uploadedFileId", fileId); // ✅ Save file ID for later use
-        alert("✅ File uploaded successfully!");
-   
-});
+            if (!response.ok) throw new Error("❌ File upload failed.");
 
-
-async function uploadFile(file) {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const response = await fetch("http://localhost:5000/api/upload", {
-        method: "POST",
-        body: formData,
+            alert("✅ File uploaded successfully!");
+            documentUpload.value = "";
+        } catch (error) {
+            console.error("❌ File upload error:", error);
+            alert(error.message);
+        }
     });
 
-    const result = await response.json();
+    documentationForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    if (!response.ok) {
-        throw new Error(result.error || "❌ File upload failed.");
-    }
+        const documentation = {
+            projectTopic: groupData?.projectTopic || "N/A",
+            projectDescription: projectDescription.value,
+            projectObjective: projectObjective.value,
+            chapterNumber: chapterNumber.value,
+            chapterDocument: "omo",
+            chapterStatus: chapterStatus,
+        };
 
-    return result.fileId;
-}
+        try {
+            const response = await fetch("http://localhost:5000/api/documentations", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify(documentation),
+            });
 
-      
-      
-    
-    
+            const result = await response.json();
 
-documentationForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+            if (!response.ok) throw new Error(result.message || "❌ Failed to submit documentation.");
 
-    // ✅ Ensure a file is uploaded before submission
-    const uploadedFileId = localStorage.getItem("uploadedFileId");
-    if (!uploadedFileId) {
-        alert("⚠️ Please upload a document before submitting.");
-        return;
-    }
+            alert("✅ Documentation submitted successfully!");
+            documentationForm.reset();
+        } catch (error) {
+            console.error("❌ Error submitting documentation:", error);
+            alert("❌ Submission failed. Please try again.");
+        }
+    });
 
-    const documentation = {
-        projectTopic: groupData.projectTopic,
-        projectDescription: projectDescription.value,
-        projectObjective: projectObjective.value,
-        chapterNumber: chapterNumber.value,
-        chapterDocument: uploadedFileId, // ✅ Use the uploaded file ID
-        chapterStatus: chapterStatus,
-    };
-
-    try {
-        const response = await fetch("http://localhost:5000/api/documentations", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
-            },
-            body: JSON.stringify(documentation),
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) throw new Error(result.message || "❌ Failed to submit documentation.");
-
-        alert("✅ Documentation submitted successfully!");
-        documentationForm.reset();
-        fetchDocumentations(); // ✅ Refresh documentation list
-
-    } catch (error) {
-        console.error("❌ Error submitting documentation:", error);
-        alert("❌ Submission failed. Please try again.");
-    }
-});
-
-
-    /** Fetch and display existing documentations **/
     async function fetchDocumentations() {
         try {
             const response = await fetch(`http://localhost:5000/api/documentations?studentID=${studentID}`, {
                 method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                },
+                headers: { "Authorization": `Bearer ${token}` },
             });
 
             if (!response.ok) throw new Error("Failed to fetch documentations.");
@@ -164,13 +138,10 @@ documentationForm.addEventListener("submit", async (e) => {
                 `;
                 groupTableBody.innerHTML += row;
             });
-
         } catch (error) {
             console.error("❌ Error fetching documentations:", error);
         }
     }
 
-    // Load initial data
     await fetchGroupData();
-    await fetchDocumentations();
 });
