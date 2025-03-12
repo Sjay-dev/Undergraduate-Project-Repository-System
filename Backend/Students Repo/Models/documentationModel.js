@@ -28,10 +28,12 @@ const documentationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    chapterDocument: {
-      type: String, // This could be a file path, URL, or any identifier for the document
+
+   chapterDocument: {
+      type: String,
       required: true,
-    } ,
+    },
+
     
     chapterStatus: {
       type: String,

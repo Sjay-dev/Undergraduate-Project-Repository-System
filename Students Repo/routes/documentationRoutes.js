@@ -1,8 +1,8 @@
+// filepath: c:\Final Year Project\Backend\Students Repo\routes\documentationRoutes.js
 const express = require("express");
 const router = express.Router();
-const {getDocumentations, createDocumentation, getDocumentation, updateDocumentation, deleteDocumentation,} = require("../controllers/documentationController");
-
-const validateToken = require("../miiddleware/validateTokenHandler");
+const { getDocumentations, createDocumentation, getDocumentation, updateDocumentation, deleteDocumentation } = require("../controllers/documentationController");
+const validateToken = require("../middleware/validateTokenHandler");
 
 // Routes for documentation
 router.use(validateToken);

@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const errorHandler = require("./miiddleware/errorHandler");
+const errorHandler = require("./middleware/errorHandler");
 const connectDb = require("./config/dbConnection");
 const dotenv = require("dotenv").config();
 
@@ -10,7 +10,7 @@ connectDb();
 const app = express();
 const port = process.env.PORT || 5000;
 
-//  Enable CORS
+// Enable CORS
 app.use(cors({
     origin: "http://127.0.0.1:5500", // Change this to match your frontend URL
     methods: "GET,POST,PUT,DELETE",
@@ -23,13 +23,9 @@ app.use(express.json());
 // API Routes
 app.use("/api/students", require("./routes/studentsRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
-app.use("/api/groups" , require("./routes/groupsRoutes"))
+app.use("/api/groups", require("./routes/groupsRoutes"));
 app.use('/api/documentations', require('./routes/documentationRoutes'));
-
-// ✅ Use Routes
-app.use("/api", require('./routes/fileRoutes'));
-
-
+app.use('/api/files', require('./routes/fileRoutes')); // Added file routes
 
 // Error Handling Middleware
 app.use(errorHandler);
@@ -38,4 +34,3 @@ app.use(errorHandler);
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
-

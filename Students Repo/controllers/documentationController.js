@@ -1,14 +1,14 @@
+// filepath: c:\Final Year Project\Backend\Students Repo\controllers\documentationController.js
 const asyncHandler = require("express-async-handler");
 const Documentation = require("../Models/documentationModel");
 const Group = require("../Models/groupModel");
-const Student = require("../Models/studentModel")
+const Student = require("../Models/studentModel");
 
 // @desc Get all documentation entries for groups owned by the lecturer
 // @route GET /api/documentations
 // @access private
 
 const getDocumentations = asyncHandler(async (req, res) => {
-
   const documentations = await Documentation.find().populate({
     path: "group",
     select: "user_id groupName",
@@ -18,7 +18,6 @@ const getDocumentations = asyncHandler(async (req, res) => {
   // Remove entries that do not have a populated group (i.e. the lecturer doesn't own the group)
   const filteredDocs = documentations.filter(doc => doc.group);
   res.status(200).json(filteredDocs);
-
 });
 
 // @desc Create a new documentation entry
@@ -26,7 +25,7 @@ const getDocumentations = asyncHandler(async (req, res) => {
 // @access private
 
 const createDocumentation = asyncHandler(async (req, res) => {
-  const { projectTopic, projectDescription, projectObjective, chapterNumber, chapterDocument , chapterStatus } = req.body;
+  const { projectTopic, projectDescription, projectObjective, chapterNumber, chapterDocument, chapterStatus } = req.body;
 
   // Validate required fields
   if (!projectTopic || !projectDescription || !projectObjective || !chapterNumber || !chapterDocument || !chapterStatus) {
@@ -50,14 +49,12 @@ const createDocumentation = asyncHandler(async (req, res) => {
     projectDescription,
     projectObjective,
     chapterNumber,
-    chapterDocument, 
+    chapterDocument,
     chapterStatus,
   });
 
   return res.status(201).json(documentation);
 });
-
-
 
 // @desc Get a single documentation entry by id
 // @route GET /api/documentations/:id
@@ -92,7 +89,6 @@ const updateDocumentation = asyncHandler(async (req, res) => {
 
   const updatedDocumentation = await Documentation.findByIdAndUpdate(req.params.id, req.body, { new: true });
   res.status(200).json(updatedDocumentation);
-
 });
 
 // @desc Delete a documentation entry
