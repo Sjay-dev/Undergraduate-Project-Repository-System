@@ -27,6 +27,16 @@ const groupSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    projectDesc: {
+      type: String,
+      required: true,
+    },
+
+    projectObj: {
+      type: String,
+      required: true,
+    },
   
 
     students: [

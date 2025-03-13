@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     tableBody.innerHTML = "";
     groups.forEach(group => {
       // Set status to "Pending" if not provided
-      const status = group.status || "Pending";
+      const status = group.projectStatus || "Pending";
   
       const tr = document.createElement("tr");
   
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify({ status: newStatus })
+        body: JSON.stringify({ projectStatus: newStatus })
       });
 
       if (response.ok) {
@@ -148,6 +148,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Populate other group details
     document.getElementById("dept").innerText = group.department || "N/A";
     document.getElementById("topic").innerText = group.projectTopic || "N/A";
+    document.getElementById("projectDescription").innerText = group.projectDesc || "N/A";
+    document.getElementById("projectObjective").innerText = group.projectObj || "N/A";
     document.getElementById("groupDetails").style.display = "block";
   }
   
@@ -167,7 +169,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
             <div class="modal-body">
               <p><strong>Department:</strong> ${student.department || "N/A"}</p>
-              <p><strong>Matric Number:</strong> ${student.matricNumber || "N/A"}</p>
+              <p><strong>Matric Number:</strong> ${student.matric_number || "N/A"}</p>
               <p><strong>Level:</strong> ${student.level || "N/A"}</p>
               <p><strong>Email:</strong> ${student.email || "N/A"}</p>
             </div>

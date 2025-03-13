@@ -8,18 +8,15 @@ const Student = require("../Models/studentModel")
 // @access private
 
 const getDocumentations = asyncHandler(async (req, res) => {
-
   const documentations = await Documentation.find().populate({
     path: "group",
     select: "user_id groupName",
-    match: { user_id: req.user.id } // Only populate if the group belongs to this lecturer
   });
 
-  // Remove entries that do not have a populated group (i.e. the lecturer doesn't own the group)
-  const filteredDocs = documentations.filter(doc => doc.group);
-  res.status(200).json(filteredDocs);
 
+  res.status(200).json(documentations);
 });
+
 
 // @desc Create a new documentation entry
 // @route POST /api/documentations

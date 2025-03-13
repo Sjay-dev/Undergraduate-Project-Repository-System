@@ -67,18 +67,22 @@
                         <label for="projectObjective">Project Objective</label>
                         <textarea id="projectObjective" class="form-control" rows="3"></textarea>
                     </div>
+                    
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+
+                <form action="" class="card p-4 shadow-sm mb-4"  id="documentUploadForm">
                     <div class="form-group">
                         <label for="chapterNumber">Chapter Number</label>
                         <input type="text" id="chapterNumber" class="form-control" placeholder="1">
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-
-                <div class="form-group" id="documentUploadForm">
+               
+                    <div class="form-group">
                     <label for="documentUpload">Upload Document</label>
                     <input type="file" id="documentUpload" class="form-control-file">
                     <button type="submitFile" class="btn btn-primary">Submit</button>
                 </div>
+            </form>
 
                 <h3 class="mt-5">Existing Documentation</h3>
                 <table class="table table-bordered mt-3 shadow-sm">

@@ -20,9 +20,9 @@ const getGroups = asyncHandler(async (req, res) => {
 const createGroup = asyncHandler(async (req, res) => {
     console.log("Console output", req.body);
 
-    const { groupName, department, projectTopic, projectStatus, students , lecturer} = req.body;
+    const { groupName, department, projectTopic, projectStatus, projectDesc , projectObj , students , lecturer} = req.body;
 
-    if (!groupName || !department || !projectTopic || !projectStatus || !students , !lecturer) {
+    if (!groupName || !department || !projectTopic || !projectStatus || !projectDesc || !projectObj || !students , !lecturer) {
         res.status(400);
         throw new Error("All fields must be filled");
     }
@@ -32,6 +32,8 @@ const createGroup = asyncHandler(async (req, res) => {
         department,
         projectTopic,
         projectStatus,
+        projectDesc,
+        projectObj,
         students,
         lecturer,
         user_id: req.user.id
@@ -58,6 +60,7 @@ const getGroup = asyncHandler(async (req, res) => {
 // @route PUT /api/groups/:id
 // @access private
 const updateGroup = asyncHandler(async (req, res) => {
+
     const group = await Group.findById(req.params.id);
 
     if (!group) {
@@ -65,15 +68,15 @@ const updateGroup = asyncHandler(async (req, res) => {
         throw new Error("Group not found");
     }
 
-    if (group.user_id.toString() !== req.user.id) {
-        res.status(403);
-        throw new Error("User doesn't have permission to update this group");
+    else {
+        const updatedGroup = await Group.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.status(200).json(updatedGroup);
     }
-
-    const updatedGroup = await Group.findByIdAndUpdate(req.params.id, req.body, { new: true });
-
-    res.status(200).json(updatedGroup);
+    
+    
+    
 });
+
 
 // @desc Delete a group
 // @route DELETE /api/groups/:id

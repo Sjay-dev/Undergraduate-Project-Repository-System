@@ -10,9 +10,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const projectTopic = document.getElementById("projectTopic");
     const projectStatus = document.getElementById("projectStatus");
     const documentationForm = document.getElementById("documentationForm");
-    const projectDescription = document.getElementById("projectDescription");
-    const projectObjective = document.getElementById("projectObjective");
+    const projectDesc = document.getElementById("projectDescription");
+    const projectObj = document.getElementById("projectObjective");
     const chapterNumber = document.getElementById("chapterNumber");
+    const documentUploadForm = document.getElementById("documentUploadForm");
     const documentUpload = document.getElementById("documentUpload");
     const groupTableBody = document.getElementById("groupTableBody");
 
@@ -34,11 +35,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!response.ok) throw new Error("Failed to fetch group details.");
 
             const studentGroups = await response.json();
+            groupData = studentGroups[0];
+
+            
 
             if (studentGroups.length > 0) {
-                groupData = studentGroups[0];
                 projectTopic.textContent = groupData.projectTopic || "No project topic yet";
                 projectStatus.textContent = groupData.projectStatus || "No project status yet";
+                projectDesc.value = groupData.projectDesc || "";
+                projectObj.value = groupData.projectObj || "";
             } else {
                 console.warn("⚠️ No group found for this student.");
             }
@@ -57,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        try {
+      
             const response = await fetch("http://localhost:5000/api/upload", {
                 method: "POST",
                 body: formData,
@@ -65,29 +70,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (!response.ok) throw new Error("❌ File upload failed.");
 
+            const result = await response.json();
+
+            localStorage.setItem("uploadedFileId", result.fileId);
+
             alert("✅ File uploaded successfully!");
             documentUpload.value = "";
-        } catch (error) {
-            console.error("❌ File upload error:", error);
-            alert(error.message);
-        }
+    
+        
     });
 
     documentationForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const documentation = {
-            projectTopic: groupData?.projectTopic || "N/A",
-            projectDescription: projectDescription.value,
-            projectObjective: projectObjective.value,
-            chapterNumber: chapterNumber.value,
-            chapterDocument: "omo",
-            chapterStatus: chapterStatus,
+            projectDesc: projectDesc.value,
+            projectObj: projectObj.value,
         };
 
         try {
-            const response = await fetch("http://localhost:5000/api/documentations", {
-                method: "POST",
+            const response = await fetch(`http://localhost:5000/api/groups/${groupData._id}`, {
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
@@ -106,42 +109,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             alert("❌ Submission failed. Please try again.");
         }
     });
-
-    async function fetchDocumentations() {
-        try {
-            const response = await fetch(`http://localhost:5000/api/documentations?studentID=${studentID}`, {
-                method: "GET",
-                headers: { "Authorization": `Bearer ${token}` },
-            });
-
-            if (!response.ok) throw new Error("Failed to fetch documentations.");
-
-            const documentations = await response.json();
-            groupTableBody.innerHTML = "";
-
-            if (documentations.length === 0) {
-                groupTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">No documentations found.</td></tr>`;
-                return;
-            }
-
-            documentations.forEach((doc) => {
-                const row = `
-                    <tr>
-                        <td>${doc.projectTopic}</td>
-                        <td>${doc.department || "N/A"}</td>
-                        <td>${doc.chapterNumber}</td>
-                        <td>${doc.createdAt ? new Date(doc.createdAt).toLocaleDateString() : "N/A"}</td>
-                        <td>
-                            <a href="http://localhost:5000/api/download/${doc.chapterDocument}" target="_blank" class="btn btn-sm btn-success">View</a>
-                        </td>
-                    </tr>
-                `;
-                groupTableBody.innerHTML += row;
-            });
-        } catch (error) {
-            console.error("❌ Error fetching documentations:", error);
-        }
-    }
 
     await fetchGroupData();
 });

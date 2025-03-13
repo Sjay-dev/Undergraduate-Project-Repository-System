@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const department = document.getElementById("department");
   const projectTopic = document.getElementById("projectTopic");
   const projectStatus = "Pending";
+  const projectDesc = "Not Available";
+  const projectObj = "Not Available";
   const groupTableBody = document.getElementById("groupTableBody");
   const searchInput = document.getElementById("studentSearch");
   const searchButton = document.getElementById("searchButton");
@@ -101,6 +103,8 @@ document.addEventListener("DOMContentLoaded", function () {
       department: department.value,
       projectTopic: projectTopic.value,
       projectStatus: projectStatus,
+      projectDesc: projectDesc,
+      projectObj: projectObj,
       students: selectedStudents,
       lecturer: fullName
     };

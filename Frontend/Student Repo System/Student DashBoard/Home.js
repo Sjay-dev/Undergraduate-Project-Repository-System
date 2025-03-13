@@ -48,9 +48,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (studentGroups.length > 0) {
         const group = studentGroups[0]; // Assuming the student is in one group
 
-        // Update project topic
+        
         localStorage.setItem("projectTopic", group.projectTopic);
         localStorage.setItem("lecturer", group.lecturer);
+        localStorage.setItem("lecturerID", group.user_id);
         localStorage.setItem("projectStatus", group.projectStatus);
 
 
@@ -88,32 +89,32 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Fetch Recent Uploads
-  try {
-    const uploadsResponse = await fetch("http://localhost:5000/api/projects/recent", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  // try {
+  //   const uploadsResponse = await fetch("http://localhost:5000/api/projects/recent", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
 
-    if (uploadsResponse.ok) {
-      const uploads = await uploadsResponse.json();
-      const uploadsTableBody = document.getElementById("uploadsTableBody");
-      uploadsTableBody.innerHTML = ""; // Clear table before inserting new data
+  //   if (uploadsResponse.ok) {
+  //     const uploads = await uploadsResponse.json();
+  //     const uploadsTableBody = document.getElementById("uploadsTableBody");
+  //     uploadsTableBody.innerHTML = ""; // Clear table before inserting new data
 
-      uploads.forEach((project) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${project.projectName}</td>
-          <td>${new Date(project.createdAt).toLocaleDateString()}</td>
-          <td>${project.status}</td>
-          <td>${project.technologies.join(", ")}</td>
-        `;
-        uploadsTableBody.appendChild(row);
-      });
-    }
-  } catch (error) {
-    console.error("Error fetching recent uploads:", error);
-  }
+  //     uploads.forEach((project) => {
+  //       const row = document.createElement("tr");
+  //       row.innerHTML = `
+  //         <td>${project.projectName}</td>
+  //         <td>${new Date(project.createdAt).toLocaleDateString()}</td>
+  //         <td>${project.status}</td>
+  //         <td>${project.technologies.join(", ")}</td>
+  //       `;
+  //       uploadsTableBody.appendChild(row);
+  //     });
+  //   }
+  // } catch (error) {
+  //   console.error("Error fetching recent uploads:", error);
+  // }
 });
