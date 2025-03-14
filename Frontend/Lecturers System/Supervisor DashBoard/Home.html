@@ -32,10 +32,10 @@
         <a href="/Frontend/Lecturers System/Submission/Submission.html">
         <span class="material-symbols-outlined">task</span>Submissions</a>
 
-        <a href="/Frontend/Lecturers System/Notification/Notification.html">
+        <!-- <a href="/Frontend/Lecturers System/Notification/Notification.html">
             <span class="material-symbols-outlined">notifications</span>
            Notifications
-        </a>
+        </a> -->
 
         <a href="/Frontend/Lecturers System/Past Projects/Past Projects.html">
             <span class="material-symbols-outlined">
@@ -95,76 +95,25 @@
             </div>
  <!-- Student Group ends -->
 
-            <div class="row student-projects">
-                
-                <div class="col-12">
-                    <!-- Student Project Table starts -->
-                <div class="col-12">
-                  
-                    <div class="card p-3">
-
-                    
-                    <h3>Project List</h3>
-
-                    <table >
-
-                        <thead>
-                            <tr>
-                                <th>Group Number</th>
-                                <th>Project Topic</th>
-                                <th>Status</th>
-                                <th>Submission Deadline</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td onclick="showGroupDetails('Group 1')" >Group 1</td>
-                                <td onclick="showGroupDetails('Group 1')" >Project Repository System</td>
-                                <td onclick="showGroupDetails('Group 1')" >Approved</td>
-                                <td onclick="showGroupDetails('Group 1')" >March 15, 2025</td>
-
-                                <td>
-                                    <button class="btn btn-primary">Deny</button>
-                                    <button class="btn btn-warning">Approve</button>
-                                    <button class="btn btn-success">Completed</button>
-                                </td>
-                            </tr>
-
-                                <tr>
-                                <td onclick="showGroupDetails('Group 2')">Group 2</td>
-                                <td onclick="showGroupDetails('Group 2')">BU-Pay</td>
-                                <td onclick="showGroupDetails('Group 2')">Pending</td>
-                                <td onclick="showGroupDetails('Group 2')">March 12, 2025</td>
-
-                                <td>
-                                    <button class="btn btn-primary">Deny</button>
-                                    <button class="btn btn-warning">Approve</button>
-                                    <button class="btn btn-success">Completed</button>
-                                </td>
-
-                            </tr>
-
-                                <tr>
-                                    
-                                <td onclick="showGroupDetails('Group 3')">Group 3</td>
-                                <td onclick="showGroupDetails('Group 3')">E-Commerce</td>
-                                <td onclick="showGroupDetails('Group 3')">Denied</td>
-                                <td onclick="showGroupDetails('Group 3')">March 17, 2025</td>
-
-                                <td>
-                                    <button class="btn btn-primary">Deny</button>
-                                    <button class="btn btn-warning">Approve</button>
-                                    <button class="btn btn-success">Completed</button>
-                                </td>
-                                
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+ <div class="row student-projects">
+    <div class="col-12">
+      <!-- Student Project Table starts -->
+      <div class="card p-3">
+        <h3>Project List</h3>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Group Name</th>
+              <th>Project Topic</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="projectsTableBody">
+            <!-- Table rows will be populated dynamically -->
+          </tbody>
+        </table>
+      </div>
             <!-- Student Project table ends -->
              
                 </div>

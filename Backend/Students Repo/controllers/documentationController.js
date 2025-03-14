@@ -1,122 +1,158 @@
-const asyncHandler = require("express-async-handler");
-const Documentation = require("../Models/documentationModel");
-const Group = require("../Models/groupModel");
-const Student = require("../Models/studentModel")
+const { GridFSBucket, ObjectId } = require("mongodb");
+const path = require("path");
+const fs = require("fs");
+const mongoose = require("mongoose");
 
-// @desc Get all documentation entries for groups owned by the lecturer
-// @route GET /api/documentations
-// @access private
+const conn = mongoose.connection;
+let gridFSBucket = null;
 
-const getDocumentations = asyncHandler(async (req, res) => {
-  const documentations = await Documentation.find().populate({
-    path: "group",
-    select: "user_id groupName",
-  });
-
-
-  res.status(200).json(documentations);
+// ✅ Ensure GridFSBucket initializes after MongoDB connects
+conn.once("open", () => {
+  gridFSBucket = new GridFSBucket(conn.db, { bucketName: "uploads" });
+  console.log("✅ GridFSBucket Ready");
 });
 
+// ✅ Ensure "uploads/" directory exists before saving files
+const uploadDir = path.join(__dirname, "../uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
 
-// @desc Create a new documentation entry
-// @route POST /api/documentations
-// @access private
 
-const createDocumentation = asyncHandler(async (req, res) => {
-  const { projectTopic, projectDescription, projectObjective, chapterNumber, chapterDocument , chapterStatus } = req.body;
+/**
+ * ✅ Upload File to GridFS
+ */
+const uploadFile = async (req, res, next) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
-  // Validate required fields
-  if (!projectTopic || !projectDescription || !projectObjective || !chapterNumber || !chapterDocument || !chapterStatus) {
-    return res.status(400).json({ error: "All fields must be filled" });
+    // Check if GridFSBucket is ready
+    if (!gridFSBucket) {
+      return res.status(500).json({ error: "GridFSBucket is not initialized yet." });
+    }
+
+    // Retrieve chapterName and groupId from the request body
+    const { chapterName, groupId } = req.body;
+    if (!chapterName || !groupId) {
+      return res.status(400).json({ error: "Chapter name and groupId are required." });
+    }
+
+    const filePath = path.join(uploadDir, req.file.filename);
+
+    if (!fs.existsSync(filePath)) {
+      return res.status(500).json({ error: "File not found on disk before streaming" });
+    }
+
+    // Open an upload stream to GridFS with metadata containing chapterName and groupId
+    const uploadStream = gridFSBucket.openUploadStream(req.file.filename, {
+      metadata: { chapterName, groupId }
+    });
+
+    fs.createReadStream(filePath)
+      .pipe(uploadStream)
+      .on("error", (err) => next(err))
+      .on("finish", () => {
+        fs.unlinkSync(filePath); // Delete temp file after upload
+        res.json({ message: "✅ File uploaded successfully!", fileId: uploadStream.id.toString() });
+      });
+  } catch (error) {
+    next(error);
   }
+};
 
-  // Get student ID from request (assumes req.student is populated by authentication middleware)
-  const studentId = req.student.id;
+/**
+ * ✅ Get All Files
+ */
+// const getAllFiles = async (req, res, next) => {
+//   try {
+//     if (!gridFSBucket) {
+//       return res.status(500).json({ error: "GridFSBucket is not initialized yet." });
+//     }
 
-  // Fetch the group where the student is a member (assuming a student belongs to a single group)
-  const studentGroup = await Group.findOne({ students: studentId });
-  
-  if (!studentGroup) {
-    return res.status(404).json({ error: "Student does not belong to any group" });
+//     const files = await conn.db.collection("uploads.files").find().toArray();
+//     if (!files.length) return res.status(404).json({ message: "No files found" });
+
+//     res.json(files);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+/**
+ * ✅ Download a File
+ */
+
+const downloadFile = async (req, res, next) => {
+  try {
+    // Use mongoose.Types.ObjectId instead of new ObjectId
+    const fileId = mongoose.Types.ObjectId(req.params.fileId);
+
+    // Find the file document by _id
+    const file = await conn.db.collection("uploads.files").findOne({ _id: fileId });
+    if (!file) return res.status(404).json({ error: "File not found" });
+
+    res.set("Content-Disposition", `attachment; filename="${file.filename}"`);
+    res.set("Content-Type", file.contentType || "application/octet-stream");
+
+    // Open a download stream using the file's _id
+    const readStream = gridFSBucket.openDownloadStream(fileId);
+    readStream.pipe(res);
+  } catch (error) {
+    next(error);
   }
-
-  // Create the documentation entry with the retrieved group ID
-  const documentation = await Documentation.create({
-    groupID: studentGroup._id,
-    projectTopic,
-    projectDescription,
-    projectObjective,
-    chapterNumber,
-    chapterDocument, 
-    chapterStatus,
-  });
-
-  return res.status(201).json(documentation);
-});
+};
 
 
 
-// @desc Get a single documentation entry by id
-// @route GET /api/documentations/:id
-// @access private
-const getDocumentation = asyncHandler(async (req, res) => {
-  const documentation = await Documentation.findById(req.params.id).populate("group", "user_id groupName");
+/**
+ * ✅ Delete a File
+ */
+const deleteFile = async (req, res, next) => {
+  try {
+    if (!gridFSBucket) {
+      return res.status(500).json({ error: "GridFSBucket is not initialized yet." });
+    }
 
-  if (!documentation) {
-    res.status(404);
-    throw new Error("Documentation not found");
+    const fileId = new ObjectId(req.params.id);
+    await gridFSBucket.delete(fileId);
+    res.json({ success: true, message: "✅ File deleted successfully!" });
+  } catch (error) {
+    next(error);
   }
+};
 
-  // Verify permission: check that the group associated with the documentation belongs to the lecturer
-  if (documentation.group.user_id.toString() !== req.user.id) {
-    res.status(403);
-    throw new Error("User doesn't have permission to view this documentation");
+
+const getFilesByGroupId = async (req, res, next) => {
+  try {
+    // Ensure GridFSBucket is ready
+    if (!gridFSBucket) {
+      return res.status(500).json({ error: "GridFSBucket is not initialized yet." });
+    }
+
+    // Retrieve the groupId from the query parameters
+    const { groupId } = req.query;
+    if (!groupId) {
+      return res.status(400).json({ error: "Group ID is required." });
+    }
+
+    // Query the uploads.files collection for files with the matching metadata.groupId
+    const files = await conn.db.collection("uploads.files")
+      .find({ "metadata.groupId": groupId })
+      .toArray();
+
+    if (!files || files.length === 0) {
+      return res.status(404).json({ message: "No files found for the specified group ID." });
+    }
+
+    res.status(200).json(files);
+  } catch (error) {
+    next(error);
   }
-
-  res.status(200).json(documentation);
-});
-
-// @desc Update a documentation entry
-// @route PUT /api/documentations/:id
-// @access private
-const updateDocumentation = asyncHandler(async (req, res) => {
-  const documentation = await Documentation.findById(req.params.id).populate("group", "user_id");
-
-  if (!documentation) {
-    res.status(404);
-    throw new Error("Documentation not found");
-  }
-
-  const updatedDocumentation = await Documentation.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.status(200).json(updatedDocumentation);
-
-});
-
-// @desc Delete a documentation entry
-// @route DELETE /api/documentations/:id
-// @access private
-const deleteDocumentation = asyncHandler(async (req, res) => {
-  const documentation = await Documentation.findById(req.params.id).populate("group", "user_id");
-
-  if (!documentation) {
-    res.status(404);
-    throw new Error("Documentation not found");
-  }
-
-  // Verify permission
-  if (documentation.group.user_id.toString() !== req.user.id) {
-    res.status(403);
-    throw new Error("User doesn't have permission to delete this documentation");
-  }
-
-  await documentation.deleteOne({ _id: req.params.id });
-  res.status(200).json({ message: "Documentation deleted successfully" });
-});
+};
 
 module.exports = {
-  getDocumentations,
-  createDocumentation,
-  getDocumentation,
-  updateDocumentation,
-  deleteDocumentation,
+  uploadFile,
+  downloadFile,
+  deleteFile,
+  getFilesByGroupId
 };

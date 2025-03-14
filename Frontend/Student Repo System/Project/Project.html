@@ -1,111 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Repository</title>
-    <link rel="stylesheet"
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Repository</title>
+  <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="Project.css">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="Project.css">
 </head>
-
 <body>
-    <div class="container-fluid d-flex">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <h2>Project Repository System</h2>
-            <a href="/Frontend/Student Repo System/Student DashBoard/Home.html">
-                <span class="material-symbols-outlined">home</span>
-                <h3>Dashboard</h3>
-            </a>
-            <a href="/Frontend/Student Repo System/Project/Project.html" class="active">
-                <span class="material-symbols-outlined">two_pager</span>
-                <h3>Project</h3>
-            </a>
-            <a href="/Frontend/Student Repo System/Supervisor/Supervisor.html">
-                <span class="material-symbols-outlined">person</span>
-                <h3>Supervisor</h3>
-            </a>
-            <a href="/Frontend/Student Repo System/Past Projects/Past Projects.html">
-                <span class="material-symbols-outlined">history</span>
-                <h3>Past Projects</h3>
-            </a>
-            <a href="/Frontend/Student Repo System/Sign in/Login.html">
-                <span class="material-symbols-outlined">logout</span>
-                <h3>Logout</h3>
-            </a>
+  <div class="container-fluid d-flex">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Project Repository System</h2>
+      <a href="/Frontend/Student Repo System/Student DashBoard/Home.html">
+        <span class="material-symbols-outlined">home</span>
+        <h3>Dashboard</h3>
+      </a>
+      <a href="/Frontend/Student Repo System/Project/Project.html" class="active">
+        <span class="material-symbols-outlined">two_pager</span>
+        <h3>Project</h3>
+      </a>
+      <a href="/Frontend/Student Repo System/Supervisor/Supervisor.html">
+        <span class="material-symbols-outlined">person</span>
+        <h3>Supervisor</h3>
+      </a>
+      <a href="/Frontend/Student Repo System/Past Projects/Past Projects.html">
+        <span class="material-symbols-outlined">history</span>
+        <h3>Past Projects</h3>
+      </a>
+      <a href="/Frontend/Student Repo System/Sign in/Login.html">
+        <span class="material-symbols-outlined">logout</span>
+        <h3>Logout</h3>
+      </a>
+    </div>
+    <!-- End Sidebar -->
+
+    <!-- Main Content -->
+    <main class="content p-4 w-100">
+      <div class="container">
+        <h2 class="mb-3">Project Section</h2>
+
+        <!-- Project Details Display -->
+        <div class="card p-4 shadow-sm mb-4">
+          <div class="form-group">
+            <label><strong>Project Topic:</strong> <span id="projectTopic"></span></label>
+          </div>
+          <div class="form-group">
+            <label><strong>Project Status:</strong> <span id="projectStatus"></span></label>
+          </div>
         </div>
 
-        <!-- Main Content -->
-        <main class="content p-4 w-100">
-            <div class="container">
+        <!-- Documentation Update Form (optional) -->
+        <form id="documentationForm" class="card p-4 shadow-sm mb-4">
+          <div class="form-group">
+            <label for="projectDescription">Project Description</label>
+            <textarea id="projectDescription" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="projectObjective">Project Objective</label>
+            <textarea id="projectObjective" class="form-control" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
 
-                <h2 class="mb-3">Project Section</h2>
+        <!-- Documentation Submission Form -->
+        <h2 class="mb-4">Documentation Submission</h2>
+        <form id="documentUploadForm" class="card p-4 shadow-sm mb-4">
+          <div class="form-group">
+            <label for="chapterNumber">Chapter Number</label>
+            <input type="text" id="chapterNumber" class="form-control" placeholder="1">
+          </div>
+          <!-- Hidden field to store the group ID -->
+          <input type="hidden" id="groupId" value="">
+          <div class="form-group">
+            <label for="documentUpload">Upload Document</label>
+            <input type="file" id="documentUpload" class="form-control-file">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
 
-                <div class="card p-4 shadow-sm mb-4">
+        <!-- Existing Documentation Table (if needed) -->
+        <h3 class="mt-5">Existing Documentation</h3>
+        <table class="table table-bordered mt-3 shadow-sm">
+          <thead class="thead-dark">
+            <tr>
+              <th>Project Topic</th>
+              <th>Department</th>
+              <th>Chapter Submitted</th>
+              <th>Date Submitted</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="groupTableBody">
+            <!-- Documentation list will be populated here -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
 
-                    <div class="form-group">
-                        <label><strong>Project Topic:</strong> <span id="projectTopic"></span></label>
-                    </div>
-
-                    <div class="form-group">
-                        <label><strong>Project Status:</strong> <span id="projectStatus"></span></label>
-                    </div>
-
-                </div>
-
-                <h2 class="mb-4">Documentation Submission</h2>
-
-                <form id="documentationForm" class="card p-4 shadow-sm mb-4">
-                    <div class="form-group">
-                        <label for="projectDescription">Project Description</label>
-                        <textarea id="projectDescription" class="form-control" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="projectObjective">Project Objective</label>
-                        <textarea id="projectObjective" class="form-control" rows="3"></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </form>
-
-                <form action="" class="card p-4 shadow-sm mb-4"  id="documentUploadForm">
-                    <div class="form-group">
-                        <label for="chapterNumber">Chapter Number</label>
-                        <input type="text" id="chapterNumber" class="form-control" placeholder="1">
-                    </div>
-               
-                    <div class="form-group">
-                    <label for="documentUpload">Upload Document</label>
-                    <input type="file" id="documentUpload" class="form-control-file">
-                    <button type="submitFile" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
-
-                <h3 class="mt-5">Existing Documentation</h3>
-                <table class="table table-bordered mt-3 shadow-sm">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Project Topic</th>
-                            <th>Department</th>
-                            <th>Chapter submitted</th>
-                            <th>Date submitted</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="groupTableBody">
-
-                    </tbody>
-                </table>
-            </div>
-        </main>
-    </div>
-
-    <script src="Project.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+  <script src="Project.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

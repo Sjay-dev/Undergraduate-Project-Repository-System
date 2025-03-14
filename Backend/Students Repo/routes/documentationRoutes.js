@@ -1,19 +1,33 @@
 const express = require("express");
+const multer = require("multer");
+const {
+  uploadFile,
+  downloadFile,
+  deleteFile,
+  getFilesByGroupId
+} = require("../controllers/documentationController");
+
 const router = express.Router();
-const {getDocumentations, createDocumentation, getDocumentation, updateDocumentation, deleteDocumentation,} = require("../controllers/documentationController");
 
-const validateToken = require("../miiddleware/validateTokenHandler");
+// ✅ Multer Disk Storage (Temporary Storage Before GridFS)
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`),
+});
+const upload = multer({ storage });
 
-// Routes for documentation
-router.use(validateToken);
+// ✅ Routes
+router.post("/upload", upload.single("file"), uploadFile);
+// router.get("/files", getAllFiles);
+router.get("/files/:id", downloadFile);
+router.delete("/files/:id", deleteFile);
 
-router.route("/")
-  .get(getDocumentations)    // GET /api/documentations - Get all documentation entries
-  .post(createDocumentation);  // POST /api/documentations - Create a new documentation entry
-
-router.route("/:id")
-  .get(getDocumentation)       // GET /api/documentations/:id - Get a single documentation entry
-  .put(updateDocumentation)    // PUT /api/documentations/:id - Update a documentation entry
-  .delete(deleteDocumentation); // DELETE /api/documentations/:id - Delete a documentation entry
+// GET /api/files?groupId=yourGroupIdValue
+router.get("/files", getFilesByGroupId);
 
 module.exports = router;
+
+
+
+
+

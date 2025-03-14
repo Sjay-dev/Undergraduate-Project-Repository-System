@@ -24,10 +24,7 @@ app.use(express.json());
 app.use("/api/students", require("./routes/studentsRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/groups" , require("./routes/groupsRoutes"))
-app.use('/api/documentations', require('./routes/documentationRoutes'));
-
-// ✅ Use Routes
-app.use("/api", require('./routes/fileRoutes'));
+app.use('/api', require('./routes/documentationRoutes'));
 
 
 
