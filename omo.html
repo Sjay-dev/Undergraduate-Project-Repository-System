@@ -1,75 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Final Year Project</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #fffbea;
-        }
-        .upload-container {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter Submissions</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      margin-top: 40px;
+    }
+    h1 {
+      margin-bottom: 30px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="upload-container p-4">
-            <h2 class="text-center text-warning">Upload Your Project</h2>
-            <p class="text-center text-muted">Accepted formats: .doc, .docx, .ppt, .pptx, .pdf</p>
-            
-            <div class="mb-3">
-                <label for="projectTopic" class="form-label">Project Topic</label>
-                <input type="text" class="form-control" id="projectTopic" placeholder="Enter project topic">
-            </div>
-            
-            <div class="mb-3">
-                <label for="basedOnProject" class="form-label">Based on Someone's  Project</label>
-                <input type="text" class="form-control" id="basedOnProject" placeholder="Enter related project name (if any)">
-            </div>
-            
-            <div class="mb-3">
-                <label for="fileInput" class="form-label">Select Files</label>
-                <input type="file" class="form-control" id="fileInput" accept=".doc,.docx,.ppt,.pptx,.pdf" multiple>
-            </div>
-            
-            <div id="fileList" class="mb-3 text-muted"></div>
-            
-            <button class="btn btn-warning w-100" onclick="handleUpload()">Upload</button>
-        </div>
-    </div>
+  <div class="container">
+    <h1>Chapter Submissions</h1>
+    <table class="table table-bordered" id="chapterTable">
+      <thead class="thead-dark">
+        <tr>
+          <th>Chapter Name</th>
+          <th>File</th>
+          <th>Upload Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Chapter submission rows will be injected here -->
+      </tbody>
+    </table>
+  </div>
 
-    <script>
-        function handleUpload() {
-            const topic = document.getElementById("projectTopic").value;
-            const basedOn = document.getElementById("basedOnProject").value;
-            const files = document.getElementById("fileInput").files;
-            
-            if (!topic.trim()) {
-                alert("Please enter a project topic.");
-                return;
-            }
-            
-            if (files.length === 0) {
-                alert("Please select at least one file to upload.");
-                return;
-            }
-            
-            let fileNames = "Files to upload:\n";
-            for (let file of files) {
-                fileNames += `- ${file.name}\n`;
-            }
-            
-            alert(`Project Topic: ${topic}\nBased on: ${basedOn || 'N/A'}\n${fileNames}`);
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Replace with the actual group ID from your application state
+      const groupId = "67d3235f8cce7db3ff328807"; 
+      const token = localStorage.getItem("token"); // if authentication is needed
+      
+      try {
+        // Use the updated route that accepts groupId as a route parameter
+        const response = await fetch(`http://localhost:5000/api/chapterSubmissions/group/${encodeURIComponent(groupId)}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+        if (!response.ok) {
+          console.error("Error fetching chapter submissions");
+          return;
         }
-    </script>
+        const submissions = await response.json();
+        console.log("Submissions:", submissions);
+        populateTable(submissions);
+      } catch (error) {
+        console.error("Error fetching chapter submissions:", error);
+      }
+    });
+    
+    // Populate the table with fetched chapter submissions
+    function populateTable(submissions) {
+      const tbody = document.querySelector("#chapterTable tbody");
+      tbody.innerHTML = "";
+      submissions.forEach((submission) => {
+        const tr = document.createElement("tr");
+        
+        // Chapter Name
+        const tdChapter = document.createElement("td");
+        tdChapter.textContent = submission.chapterName || "N/A";
+        tr.appendChild(tdChapter);
+        
+        // File: Instead of using fileUrl, check if fileId exists.
+        const tdFile = document.createElement("td");
+        tdFile.textContent = submission.fileId ? "File available" : "N/A";
+        tr.appendChild(tdFile);
+        
+        // Upload Date (using dateSubmitted field if available)
+        const tdDate = document.createElement("td");
+        const date = submission.dateSubmitted ? new Date(submission.dateSubmitted) : new Date();
+        tdDate.textContent = date.toLocaleString();
+        tr.appendChild(tdDate);
+        
+        // Actions: Download button
+        const tdActions = document.createElement("td");
+        const downloadBtn = document.createElement("button");
+        downloadBtn.className = "btn btn-primary btn-sm";
+        downloadBtn.textContent = "Download";
+        downloadBtn.addEventListener("click", () => {
+          // Open the download endpoint in a new tab using the submission _id
+          window.open(`http://localhost:5000/api/chapterSubmissions/download/${submission._id}`, "_blank");
+        });
+        tdActions.appendChild(downloadBtn);
+        tr.appendChild(tdActions);
+        
+        tbody.appendChild(tr);
+      });
+    }
+  </script>
 </body>
 </html>

@@ -1,0 +1,71 @@
+/* General Body Styling */
+body {
+    background-color: #fffbea;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Sidebar Styles */
+  .sidebar {
+    background-color: #343a40;
+    min-height: 100vh;
+    padding: 20px;
+    color: #fff;
+  }
+  
+  .sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sidebar a:hover {
+    background-color: #495057;
+  }
+  
+  .sidebar a.active {
+    background-color: #ffc107;
+    color: #000;
+  }
+  
+  .sidebar .material-symbols-outlined {
+    font-size: 1.2rem;
+    margin-right: 10px;
+  }
+  
+  /* Main Content Styles */
+  .content {
+    padding: 40px;
+  }
+  
+  .upload-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .sidebar {
+      text-align: center;
+      padding: 15px;
+    }
+    .sidebar a {
+      justify-content: center;
+    }
+    .content {
+      padding: 20px;
+    }
+  }
+  
